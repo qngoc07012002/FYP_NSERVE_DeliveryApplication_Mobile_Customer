@@ -15,9 +15,14 @@ class LandingPage extends StatelessWidget {
               height: 100,
             ),
             Row(
+
               children: [
+
                 Text("1234"),
 
+                ElevatedButton(onPressed: (){
+
+                }, child: Text("ABC"))
               ],
             )
           ],
