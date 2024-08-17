@@ -1,3 +1,4 @@
+import 'package:deliveryapplication_mobile_customer/screens/homepage_screen.dart';
 import 'package:deliveryapplication_mobile_customer/screens/landing_page.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "ABC",
-      home: const LandingPage(),
+      home: const HomePage(),
     );
   }
 }
