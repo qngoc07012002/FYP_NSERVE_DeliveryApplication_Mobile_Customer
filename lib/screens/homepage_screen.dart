@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Food Delivery'),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.blue,  // Đổi màu theme cho AppBar
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: _pickLocation,
                     child: Row(
                       children: [
-                        const Icon(Icons.location_on, color: Colors.redAccent),
+                        const Icon(Icons.location_on, color: Colors.blue),
                         const SizedBox(width: 4.0),
                         Text(
                           selectedLocation,
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
               TextField(
                 decoration: InputDecoration(
                   hintText: 'Search for food or restaurants',
-                  prefixIcon: const Icon(Icons.search, color: Colors.redAccent),
+                  prefixIcon: const Icon(Icons.search, color: Colors.blue),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: const BorderSide(color: Colors.grey),
@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           CircleAvatar(
-            backgroundColor: Colors.redAccent.withOpacity(0.8),
+            backgroundColor: Colors.blue.withOpacity(0.8),
             radius: 32,
             child: Icon(icon, size: 32, color: Colors.white),
           ),
@@ -183,19 +183,37 @@ class _HomePageState extends State<HomePage> {
         print('Store $name clicked');
       },
       child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0), // Bo góc cho Card
+        ),
         elevation: 5,
         margin: const EdgeInsets.symmetric(vertical: 8.0),
-        child: ListTile(
-          leading: Image.network(imageUrl, width: 100, height: 100, fit: BoxFit.cover),
-          title: Text(name),
-          subtitle: Text(description),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.star, color: Colors.amber),
-              Text(rating.toString()),
-            ],
-          ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.horizontal(left: Radius.circular(12.0)), // Bo góc trái cho hình ảnh
+              child: Image.network(
+                imageUrl,
+                width: 120, // Kích thước hình ảnh
+                height: 120,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(width: 8.0),
+            Expanded(
+              child: ListTile(
+                title: Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
+                subtitle: Text(description),
+                trailing: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.star, color: Colors.amber),
+                    Text(rating.toString(), style: TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
