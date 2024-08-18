@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'message_page.dart';
 import 'order_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           _buildHomePage(), // The home page content
           OrderPage(),
-          Center(child: Text('Message Page')),
+          MessagePage(),
           Center(child: Text('Profile Page')),
         ],
       ),
