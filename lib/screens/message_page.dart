@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
 
+import 'messagedetail_screen.dart';
+
 class MessagePage extends StatelessWidget {
   final List<Map<String, dynamic>> conversations = [
     {
-      'name': 'Cửa Hàng Pizza',
-      'avatarUrl': 'https://example.com/store_avatar.png',
+      'name': 'Béo Pizza Restaurant',
+      'avatarUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFQv4gzmNtZTnbl7lQMMmV5JWDO2_fIO2luA&s',
       'lastMessage': 'Cảm ơn bạn đã đặt hàng!',
       'timestamp': DateTime.now().subtract(Duration(minutes: 5)),
     },
     {
-      'name': 'Người Giao Hàng',
-      'avatarUrl': 'https://example.com/delivery_avatar.png',
+      'name': 'Béo Shipper',
+      'avatarUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnihI8ux-tT_Z1JF8toQIn05jA8PO--cdCJELNtoYDXoA2C1FbkjQLE34NTjbsvyo0nXU&usqp=CAU',
+      'lastMessage': 'Tôi đang trên đường đến nơi!',
+      'timestamp': DateTime.now().subtract(Duration(days: 1)),
+    },
+    {
+      'name': 'Béo Shipper',
+      'avatarUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnihI8ux-tT_Z1JF8toQIn05jA8PO--cdCJELNtoYDXoA2C1FbkjQLE34NTjbsvyo0nXU&usqp=CAU',
       'lastMessage': 'Tôi đang trên đường đến nơi!',
       'timestamp': DateTime.now().subtract(Duration(hours: 1)),
     },
     {
-      'name': 'Khách Hàng',
-      'avatarUrl': 'https://example.com/customer_avatar.png',
-      'lastMessage': 'Có thể thay đổi địa chỉ giao hàng không?',
+      'name': 'Béo Shipper',
+      'avatarUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnihI8ux-tT_Z1JF8toQIn05jA8PO--cdCJELNtoYDXoA2C1FbkjQLE34NTjbsvyo0nXU&usqp=CAU',
+      'lastMessage': 'Tôi đang trên đường đến nơi!',
       'timestamp': DateTime.now().subtract(Duration(days: 1)),
     },
   ];
@@ -27,7 +35,7 @@ class MessagePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Danh Sách Tin Nhắn',
+          'Messages',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: const Color(0xFF39c5c8),
