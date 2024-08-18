@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Để định dạng thời gian
 
 class OrderDetailPage extends StatelessWidget {
   final Map<String, dynamic> order;
@@ -23,6 +24,10 @@ class OrderDetailPage extends StatelessWidget {
       {'name': 'Spicy Tuna Roll', 'quantity': 2},
     ];
 
+    // Format the order time
+    final orderTime = (order['orderTime'] as DateTime?) ?? DateTime.now();
+    final formattedTime = DateFormat('yyyy-MM-dd – HH:mm').format(orderTime);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -31,6 +36,7 @@ class OrderDetailPage extends StatelessWidget {
         ),
         backgroundColor: const Color(0xFF39c5c8),
         elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white), // Set back button color to white
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(20.0)),
         ),
@@ -131,6 +137,15 @@ class OrderDetailPage extends StatelessWidget {
                       ),
                     ),
                   const Divider(height: 24.0, thickness: 1.0),
+                  Text(
+                    '$formattedTime',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Text(
