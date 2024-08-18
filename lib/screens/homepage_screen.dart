@@ -15,8 +15,30 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Food Delivery'),
-        backgroundColor: Colors.blue,  // Đổi màu theme cho AppBar
+        title: GestureDetector(
+          onTap: _pickLocation,
+          child: Row(
+            children: [
+              const Icon(Icons.location_on, color: Colors.white),
+              const SizedBox(width: 4.0),
+              Text(
+                selectedLocation,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+            ],
+          ),
+        ),
+        backgroundColor: const Color(0xFF39c5c8), // Màu chủ đạo cho AppBar
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20.0), // Bo góc phía dưới AppBar
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -24,41 +46,19 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Pick Location
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: _pickLocation,
-                    child: Row(
-                      children: [
-                        const Icon(Icons.location_on, color: Colors.blue),
-                        const SizedBox(width: 4.0),
-                        Text(
-                          selectedLocation,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const Icon(Icons.keyboard_arrow_down, color: Colors.black87),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
               const SizedBox(height: 16.0),
 
               // Search Bar
               TextField(
                 decoration: InputDecoration(
                   hintText: 'Search for food or restaurants',
-                  prefixIcon: const Icon(Icons.search, color: Colors.blue),
+                  prefixIcon: const Icon(Icons.search, color: Color(0xFF39c5c8)),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: const BorderSide(color: Colors.grey),
                   ),
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
                 onSubmitted: _search,
               ),
@@ -115,6 +115,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      backgroundColor: const Color(0xFFf8f8f8), // Màu nền
     );
   }
 
@@ -160,7 +161,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           CircleAvatar(
-            backgroundColor: Colors.blue.withOpacity(0.8),
+            backgroundColor: const Color(0xFF39c5c8).withOpacity(0.8),
             radius: 32,
             child: Icon(icon, size: 32, color: Colors.white),
           ),
@@ -191,7 +192,7 @@ class _HomePageState extends State<HomePage> {
         child: Row(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.horizontal(left: Radius.circular(12.0)), // Bo góc trái cho hình ảnh
+              borderRadius: const BorderRadius.horizontal(left: Radius.circular(12.0)), // Bo góc trái cho hình ảnh
               child: Image.network(
                 imageUrl,
                 width: 120, // Kích thước hình ảnh
@@ -202,13 +203,13 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(width: 8.0),
             Expanded(
               child: ListTile(
-                title: Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
                 subtitle: Text(description),
                 trailing: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(Icons.star, color: Colors.amber),
-                    Text(rating.toString(), style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(rating.toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
