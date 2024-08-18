@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Popular Restaurants',
+                    'Restaurants',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
