@@ -64,7 +64,7 @@ class ChatDetailPage extends StatelessWidget {
 
   Widget _buildMessageInput() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
       child: Row(
         children: [
           Expanded(
