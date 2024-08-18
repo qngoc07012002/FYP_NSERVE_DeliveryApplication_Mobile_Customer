@@ -10,133 +10,177 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String selectedLocation = "Your Location";
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      // Here you can handle navigation logic based on the selected index
+      print('Selected index: $_selectedIndex');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Pick Location & Search Bar
-            Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFF39c5c8), // Màu xanh chủ đạo
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(20.0), // Bo tròn góc dưới
-                ),
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 40,
-                  ),
-                  GestureDetector(
-                    onTap: _pickLocation,
-                    child: Row(
-                      children: [
-                        const Icon(Icons.location_on, color: Colors.white),
-                        const SizedBox(width: 4.0),
-                        Text(
-                          selectedLocation,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const Icon(Icons.keyboard_arrow_down, color: Colors.white),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search for food or restaurants',
-                      prefixIcon: const Icon(Icons.search, color: Color(0xFF39c5c8)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                    onSubmitted: _search,
-                  ),
-                ],
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          _buildHomePage(), // The home page content
+          Center(child: Text('Order Page')),
+          Center(child: Text('Message Page')),
+          Center(child: Text('Profile Page')),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list_alt),
+            label: 'Order',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message),
+            label: 'Message',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: const Color(0xFF39c5c8),
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+
+  Widget _buildHomePage() {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Pick Location & Search Bar
+          Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF39c5c8), // Màu xanh chủ đạo
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(20.0), // Bo tròn góc dưới
               ),
             ),
-            const SizedBox(height: 24.0),
-
-            // Food Categories
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Categories',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 40,
+                ),
+                GestureDetector(
+                  onTap: _pickLocation,
+                  child: Row(
                     children: [
-                      _buildCategoryItem('Pizza', Icons.local_pizza),
-                      _buildCategoryItem('Sushi', Icons.ramen_dining),
-                      _buildCategoryItem('Burgers', Icons.fastfood),
-                      _buildCategoryItem('Salads', Icons.local_dining),
+                      const Icon(Icons.location_on, color: Colors.white),
+                      const SizedBox(width: 4.0),
+                      Text(
+                        selectedLocation,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const Icon(Icons.keyboard_arrow_down, color: Colors.white),
                     ],
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24.0),
-
-            // Stores List
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Restaurants',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                ),
+                const SizedBox(height: 16.0),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search for food or restaurants',
+                    prefixIcon: const Icon(Icons.search, color: Color(0xFF39c5c8)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: BorderSide.none,
                     ),
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
-                  const SizedBox(height: 8.0),
-                  _buildStoreItem(
-                    name: 'Pizza Hut',
-                    imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFc46glG2RnSW-wnlDZKghM-cmUlqskpIZA&s',
-                    description: 'Best pizza in town',
-                    rating: 4.5,
-                  ),
-                  _buildStoreItem(
-                    name: 'Sushi Bar',
-                    imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFc46glG2RnSW-wnlDZKghM-cmUlqskpIZA&s',
-                    description: 'Fresh sushi and more',
-                    rating: 4.8,
-                  ),
-                  _buildStoreItem(
-                    name: 'Burger King',
-                    imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFc46glG2RnSW-wnlDZKghM-cmUlqskpIZA&s',
-                    description: 'Delicious burgers and fries',
-                    rating: 4.3,
-                  ),
-                ],
-              ),
+                  onSubmitted: _search,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 24.0),
+
+          // Food Categories
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Categories',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildCategoryItem('Pizza', Icons.local_pizza),
+                    _buildCategoryItem('Sushi', Icons.ramen_dining),
+                    _buildCategoryItem('Burgers', Icons.fastfood),
+                    _buildCategoryItem('Salads', Icons.local_dining),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24.0),
+
+          // Stores List
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Restaurants',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                _buildStoreItem(
+                  name: 'Pizza Hut',
+                  imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFc46glG2RnSW-wnlDZKghM-cmUlqskpIZA&s',
+                  description: 'Best pizza in town',
+                  rating: 4.5,
+                ),
+                _buildStoreItem(
+                  name: 'Sushi Bar',
+                  imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFc46glG2RnSW-wnlDZKghM-cmUlqskpIZA&s',
+                  description: 'Fresh sushi and more',
+                  rating: 4.8,
+                ),
+                _buildStoreItem(
+                  name: 'Burger King',
+                  imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFc46glG2RnSW-wnlDZKghM-cmUlqskpIZA&s',
+                  description: 'Delicious burgers and fries',
+                  rating: 4.3,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
-      backgroundColor: const Color(0xFFf8f8f8), // Màu nền
     );
   }
 
