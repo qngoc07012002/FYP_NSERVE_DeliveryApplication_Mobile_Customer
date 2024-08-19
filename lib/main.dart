@@ -1,5 +1,5 @@
 import 'package:deliveryapplication_mobile_customer/screens/homepage_screen.dart';
-import 'package:deliveryapplication_mobile_customer/screens/landing_page.dart';
+import 'package:deliveryapplication_mobile_customer/screens/landing_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

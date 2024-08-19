@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'bookbike_screen.dart';
-import 'message_page.dart';
+import 'message_screen.dart';
 import 'order_screen.dart';
 
 class HomePage extends StatefulWidget {
