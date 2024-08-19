@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'editprofile_screen.dart';
 import 'order_screen.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -26,29 +27,7 @@ class ProfilePage extends StatelessWidget {
                     backgroundImage: NetworkImage(
                         'https://www.w3schools.com/w3images/avatar2.png'), // Example image URL
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                          ),
-                        ],
-                      ),
-                      child: IconButton(
-                        icon: const Icon(Icons.camera_alt, color: Color(0xFF39c5c8)),
-                        onPressed: () {
-                          // Handle change profile picture
-                        },
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
             ),
@@ -58,7 +37,12 @@ class ProfilePage extends StatelessWidget {
               leading: const Icon(Icons.edit, color: Color(0xFF39c5c8)),
               title: const Text('Edit Profile'),
               onTap: () {
-                // Handle Edit Profile action
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfilePage(),
+                  ),
+                );
               },
             ),
             Divider(color: Colors.grey[300]),
