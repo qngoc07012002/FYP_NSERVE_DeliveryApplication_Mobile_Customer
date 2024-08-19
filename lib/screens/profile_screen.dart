@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile', style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xFF39c5c8),
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 20.0),
+            // Profile picture
+            Center(
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 60.0,
+                    backgroundImage: NetworkImage(
+                        'https://www.w3schools.com/w3images/avatar2.png'), // Example image URL
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                          ),
+                        ],
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.camera_alt, color: Color(0xFF39c5c8)),
+                        onPressed: () {
+                          // Handle change profile picture
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            // Profile options
+            ListTile(
+              leading: const Icon(Icons.edit, color: Color(0xFF39c5c8)),
+              title: const Text('Edit Profile'),
+              onTap: () {
+                // Handle Edit Profile action
+              },
+            ),
+            Divider(color: Colors.grey[300]),
+            ListTile(
+              leading: const Icon(Icons.lock, color: Color(0xFF39c5c8)),
+              title: const Text('Change Password'),
+              onTap: () {
+                // Handle Change Password action
+              },
+            ),
+            Divider(color: Colors.grey[300]),
+            ListTile(
+              leading: const Icon(Icons.history, color: Color(0xFF39c5c8)),
+              title: const Text('Order History'),
+              onTap: () {
+                // Handle Order History action
+              },
+            ),
+            Divider(color: Colors.grey[300]),
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.red),
+              title: const Text('Logout'),
+              onTap: () {
+                // Handle Logout action
+              },
+            ),
+            Divider(color: Colors.grey[300]),
+          ],
+        ),
+      ),
+    );
+  }
+}

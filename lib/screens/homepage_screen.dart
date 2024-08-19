@@ -1,3 +1,4 @@
+import 'package:deliveryapplication_mobile_customer/screens/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,7 @@ class _HomePageState extends State<HomePage> {
           _buildHomePage(), // The home page content
           OrderPage(),
           MessagePage(),
-          Center(child: Text('Profile Page')),
+          ProfilePage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
