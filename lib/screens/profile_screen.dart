@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'order_screen.dart';
+
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
@@ -72,7 +74,12 @@ class ProfilePage extends StatelessWidget {
               leading: const Icon(Icons.history, color: Color(0xFF39c5c8)),
               title: const Text('Order History'),
               onTap: () {
-                // Handle Order History action
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrderPage(),
+                  ),
+                );
               },
             ),
             Divider(color: Colors.grey[300]),

@@ -2,6 +2,7 @@ import 'package:deliveryapplication_mobile_customer/screens/profile_screen.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'bookbike_screen.dart';
 import 'message_page.dart';
 import 'order_screen.dart';
 
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         index: _selectedIndex,
         children: [
           _buildHomePage(), // The home page content
-          OrderPage(),
+          RideBookingPage(),
           MessagePage(),
           ProfilePage(),
         ],
@@ -39,12 +40,12 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.fastfood),
+            label: 'Food',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt),
-            label: 'Order',
+            icon: Icon(Icons.directions_bike_sharp),
+            label: 'Bike',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.message),
