@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
-class RideBookingPage extends StatelessWidget {
+class RideBookingPage extends StatefulWidget {
+  @override
+  _RideBookingPageState createState() => _RideBookingPageState();
+}
+
+class _RideBookingPageState extends State<RideBookingPage> {
+  String selectedVehicle = 'Motorbike';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,7 +16,7 @@ class RideBookingPage extends StatelessWidget {
           // Placeholder image at the bottom layer
           Positioned.fill(
             child: Image.asset(
-              'assets/sample_map.jpg', // Replace with your own image path
+              'assets/images/sample_map.jpg', // Replace with your own image path
               fit: BoxFit.cover,
             ),
           ),
@@ -72,8 +79,14 @@ class RideBookingPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildVehicleOption(Icons.motorcycle, 'Motorbike', true),
-                  _buildVehicleOption(Icons.directions_car, 'Car', false),
+                  _buildVehicleOption(Icons.motorcycle, 'Motorbike'),
+                  _buildVehicleOption(Icons.directions_car, 'Car'),
+                  IconButton(
+                    icon: Icon(Icons.arrow_forward_ios, color: Color(0xFF39c5c8)),
+                    onPressed: () {
+                      // Handle booking action
+                    },
+                  ),
                 ],
               ),
             ),
@@ -83,10 +96,14 @@ class RideBookingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildVehicleOption(IconData icon, String label, bool isSelected) {
+  Widget _buildVehicleOption(IconData icon, String label) {
+    bool isSelected = selectedVehicle == label;
     return GestureDetector(
+
       onTap: () {
-        // Handle vehicle selection
+        setState(() {
+          selectedVehicle = label;
+        });
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -101,7 +118,7 @@ class RideBookingPage extends StatelessWidget {
             label,
             style: TextStyle(
               color: isSelected ? Color(0xFF39c5c8) : Colors.grey,
-              fontWeight: FontWeight.bold,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
           ),
         ],
