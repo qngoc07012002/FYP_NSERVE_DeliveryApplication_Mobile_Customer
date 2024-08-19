@@ -1,3 +1,4 @@
+import 'package:deliveryapplication_mobile_customer/screens/changepassword_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'editprofile_screen.dart';
@@ -50,7 +51,12 @@ class ProfilePage extends StatelessWidget {
               leading: const Icon(Icons.lock, color: Color(0xFF39c5c8)),
               title: const Text('Change Password'),
               onTap: () {
-                // Handle Change Password action
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChangePasswordPage(),
+                  ),
+                );
               },
             ),
             Divider(color: Colors.grey[300]),
