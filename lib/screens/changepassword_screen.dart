@@ -37,6 +37,7 @@ class ChangePasswordPage extends StatelessWidget {
                   onPressed: () {
                     // Handle save action
                   },
+
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
                     shape: RoundedRectangleBorder(
@@ -44,7 +45,7 @@ class ChangePasswordPage extends StatelessWidget {
                     ),
                     backgroundColor: const Color(0xFF39c5c8),
                   ),
-                  child: const Text('Save Changes', style: TextStyle(fontSize: 16.0)),
+                  child: const Text('Save Changes', style: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
               ),
             ],

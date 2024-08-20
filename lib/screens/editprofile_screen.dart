@@ -79,7 +79,7 @@ class EditProfilePage extends StatelessWidget {
                     ),
                     backgroundColor: const Color(0xFF39c5c8),
                   ),
-                  child: const Text('Save Changes', style: TextStyle(fontSize: 16.0)),
+                  child: const Text('Save Changes', style: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
               ),
             ],
