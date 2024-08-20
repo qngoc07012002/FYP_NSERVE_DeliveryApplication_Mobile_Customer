@@ -1,4 +1,5 @@
 import 'package:deliveryapplication_mobile_customer/screens/profile_screen.dart';
+import 'package:deliveryapplication_mobile_customer/screens/restaurantdetail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -247,6 +248,12 @@ class _HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: () {
         print('Store $name clicked');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RestaurantDetailPage(),
+          ),
+        );
       },
       child: Card(
         shape: RoundedRectangleBorder(
