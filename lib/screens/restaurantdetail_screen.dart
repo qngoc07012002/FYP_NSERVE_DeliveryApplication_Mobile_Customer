@@ -208,7 +208,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           color: const Color(0xFF39c5c8),
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
