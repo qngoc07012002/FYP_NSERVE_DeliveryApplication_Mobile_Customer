@@ -1,4 +1,5 @@
 import 'package:deliveryapplication_mobile_customer/screens/changepassword_screen.dart';
+import 'package:deliveryapplication_mobile_customer/screens/payment_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'editprofile_screen.dart';
@@ -24,13 +25,13 @@ class ProfilePage extends StatelessWidget {
           children: [
             const SizedBox(height: 20.0),
             // Profile picture
-            Center(
+            const Center(
               child: Stack(
                 children: [
                   CircleAvatar(
                     radius: 60.0,
                     backgroundImage: NetworkImage(
-                        'https://www.w3schools.com/w3images/avatar2.png'), // Example image URL
+                        'https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-6/448249343_2254063974927591_3013120637072065076_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=u9k1rh_qdN8Q7kNvgHeWbBb&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYB0lp00TWjdTXz3ijJJaz2rqg7zo3fOEQcZDN6BtJ1Q8A&oe=66CA595B'), // Example image URL
                   ),
 
                 ],
@@ -84,7 +85,7 @@ class ProfilePage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OrderPage(),
+                    builder: (context) => PaymentPage(),
                   ),
                 );
               },

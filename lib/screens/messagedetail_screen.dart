@@ -16,6 +16,9 @@ class ChatDetailPage extends StatelessWidget {
         backgroundColor: const Color(0xFF39c5c8),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20.0)),
+        ),
       ),
       body: Column(
         children: [

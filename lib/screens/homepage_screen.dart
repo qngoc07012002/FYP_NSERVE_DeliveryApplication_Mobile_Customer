@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Food',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.directions_bike_sharp),
+            icon: Icon(Icons.directions_car),
             label: 'Bike',
           ),
           BottomNavigationBarItem(
