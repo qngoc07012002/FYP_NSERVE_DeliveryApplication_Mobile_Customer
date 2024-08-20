@@ -1,4 +1,5 @@
 import 'package:deliveryapplication_mobile_customer/screens/profile_screen.dart';
+import 'package:deliveryapplication_mobile_customer/screens/restaurant_filter_screen.dart';
 import 'package:deliveryapplication_mobile_customer/screens/restaurantdetail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -218,12 +219,26 @@ class _HomePageState extends State<HomePage> {
 
   void _search(String query) {
     print('Searching for $query');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FilterPage(),
+      ),
+    );
   }
 
   Widget _buildCategoryItem(String title, IconData icon) {
     return GestureDetector(
       onTap: () {
         print('Category $title clicked');
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FilterPage(),
+            ),
+          );
+
       },
       child: Column(
         children: [
