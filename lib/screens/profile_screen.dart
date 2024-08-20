@@ -78,6 +78,19 @@ class ProfilePage extends StatelessWidget {
             ),
             Divider(color: Colors.grey[300]),
             ListTile(
+              leading: const Icon(Icons.payment, color: Color(0xFF39c5c8)),
+              title: const Text('Payment'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrderPage(),
+                  ),
+                );
+              },
+            ),
+            Divider(color: Colors.grey[300]),
+            ListTile(
               leading: const Icon(Icons.logout, color: Colors.red),
               title: const Text('Logout'),
               onTap: () {
