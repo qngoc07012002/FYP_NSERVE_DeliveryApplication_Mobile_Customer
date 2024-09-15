@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 class RideBookingPage extends StatefulWidget {
   @override
@@ -7,6 +8,11 @@ class RideBookingPage extends StatefulWidget {
 
 class _RideBookingPageState extends State<RideBookingPage> {
   String selectedVehicle = 'Motorbike';
+  MapboxMap? mapboxMap;
+
+  _onMapCreated(MapboxMap mapboxMap) {
+    this.mapboxMap = mapboxMap;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +21,15 @@ class _RideBookingPageState extends State<RideBookingPage> {
         children: [
           // Placeholder image at the bottom layer
           Positioned.fill(
-            child: Image.asset(
-              'assets/images/sample_map.jpg', // Replace with your own image path
-              fit: BoxFit.cover,
+            child: MapWidget(
+              key: const ValueKey("mapWidget"),
+              resourceOptions: ResourceOptions(accessToken: "pk.eyJ1IjoicW5nb2MwNzAxMjAwMiIsImEiOiJjbTE0MDkwbWkxZ3IwMnZxMjB2ejBkaGZnIn0.cuJH5sW_W10ZWlQpIb67dw"),
+              cameraOptions: CameraOptions(
+                  center: Point(coordinates: Position(1, 1)).toJson(),
+                  zoom: 3.0),
+              styleUri: MapboxStyles.DARK,
+              textureView: true,
+              onMapCreated: _onMapCreated,
             ),
           ),
 
