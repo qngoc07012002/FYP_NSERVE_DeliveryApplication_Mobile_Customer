@@ -4,6 +4,7 @@ import 'package:deliveryapplication_mobile_customer/screens/restaurantdetail_scr
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../services/location_service.dart';
 import 'bookbike_screen.dart';
 import 'message_screen.dart';
 import 'order_screen.dart';
@@ -16,8 +17,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String selectedLocation = "Your Location";
+  String selectedLocation = "Đang tải..."; // Placeholder text
   int _selectedIndex = 0;
+  final LocationService locationService = LocationService();
+
+  @override
+  void initState() {
+    super.initState();
+    _updateLocation(); // Fetch location when the page loads
+  }
+
+  Future<void> _updateLocation() async {
+    try {
+      String location = await locationService.getAddressFromCurrentLocation();
+      setState(() {
+        selectedLocation = location;
+      });
+    } catch (e) {
+      print(e.toString());
+      setState(() {
+        selectedLocation = 'Không thể lấy địa chỉ';
+      });
+    }
+  }
+
+
+
 
   void _onItemTapped(int index) {
     setState(() {
@@ -67,7 +92,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildHomePage() {
-    return SingleChildScrollView(
+    return RefreshIndicator(onRefresh: _updateLocation, child: SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -188,7 +213,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   void _pickLocation() async {
