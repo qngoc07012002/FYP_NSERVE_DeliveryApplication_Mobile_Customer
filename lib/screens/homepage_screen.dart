@@ -4,8 +4,9 @@ import 'package:deliveryapplication_mobile_customer/screens/restaurantdetail_scr
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../services/location_service.dart';
+import '../services/reserve_geo.dart';
 import 'bookbike_screen.dart';
+import 'locationpicker_screen.dart';
 import 'message_screen.dart';
 import 'order_screen.dart';
 
@@ -20,7 +21,8 @@ class _HomePageState extends State<HomePage> {
   String selectedLocation = "Đang tải..."; // Placeholder text
   int _selectedIndex = 0;
   final LocationService locationService = LocationService();
-
+  double? latitude;
+  double? longitude;
   @override
   void initState() {
     super.initState();
@@ -42,7 +44,22 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-
+  void _pickLocation() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LocationPickerScreen(
+          onLocationPicked: (address, lat, lng) {
+            setState(() {
+              selectedLocation = address.split(',').first;
+              latitude = lat;
+              longitude = lng;
+            });
+          },
+        ),
+      ),
+    );
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -118,14 +135,14 @@ class _HomePageState extends State<HomePage> {
                       const Icon(Icons.location_on, color: Colors.white),
                       const SizedBox(width: 4.0),
                       Text(
-                        selectedLocation,
+                        selectedLocation + ' ',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
-                      const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+                      const Icon(Icons.edit, color: Colors.white),
                     ],
                   ),
                 ),
@@ -216,31 +233,7 @@ class _HomePageState extends State<HomePage> {
     ));
   }
 
-  void _pickLocation() async {
-    List<String> locations = ['Hanoi', 'Ho Chi Minh City', 'Da Nang', 'Hai Phong'];
-    String? picked = await showModalBottomSheet<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return ListView.builder(
-          itemCount: locations.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(locations[index]),
-              onTap: () {
-                Navigator.pop(context, locations[index]);
-              },
-            );
-          },
-        );
-      },
-    );
 
-    if (picked != null && picked.isNotEmpty) {
-      setState(() {
-        selectedLocation = picked;
-      });
-    }
-  }
 
   void _search(String query) {
     print('Searching for $query');
