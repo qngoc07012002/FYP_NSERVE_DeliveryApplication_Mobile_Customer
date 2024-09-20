@@ -18,7 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String selectedLocation = "Đang tải..."; // Placeholder text
+  String selectedLocation = "Loading..."; // Placeholder text
   int _selectedIndex = 0;
   final LocationService locationService = LocationService();
   double? latitude;
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       print(e.toString());
       setState(() {
-        selectedLocation = 'Không thể lấy địa chỉ';
+        selectedLocation = 'Cannot get address';
       });
     }
   }
