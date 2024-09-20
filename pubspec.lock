@@ -105,6 +105,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.2+3"
+  dio:
+    dependency: "direct main"
+    description:
+      name: dio
+      sha256: "5598aa796bbf4699afd5c67c0f5f6e2ed542afc956884b9cd58c306966efc260"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.7.0"
+  dio_web_adapter:
+    dependency: transitive
+    description:
+      name: dio_web_adapter
+      sha256: "33259a9276d6cea88774a0000cfae0d861003497755969c92faa223108620dc8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   enum_to_string:
     dependency: transitive
     description:
@@ -158,6 +174,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.22"
+  flutter_polyline_points:
+    dependency: "direct main"
+    description:
+      name: flutter_polyline_points
+      sha256: "02699e69142f51a248d784b6e3eec524194467fca5f7c4da19699ce2368b6980"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -400,6 +424,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+  polyline_codec:
+    dependency: "direct main"
+    description:
+      name: polyline_codec
+      sha256: "97e72f458612ea7f384bca47580ac1432ef11781fe5b05e228b656ee0536a28d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.6"
+  polyline_do:
+    dependency: "direct main"
+    description:
+      name: polyline_do
+      sha256: "41b7a4c3d3f259816764d577beba843e683f59117958c51e90a5ca975ff3d298"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   rbush:
     dependency: transitive
     description:

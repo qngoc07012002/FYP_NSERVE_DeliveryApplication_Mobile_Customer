@@ -41,6 +41,10 @@ dependencies:
   http: ^0.13.5
   permission_handler: ^11.3.1
   flutter_launcher_icons: ^0.13.1
+  dio: ^5.1.2
+  polyline_do: ^0.1.0
+  flutter_polyline_points: ^1.0.0
+  polyline_codec: ^0.1.6
 dev_dependencies:
   flutter_test:
     sdk: flutter
