@@ -7,25 +7,25 @@ class MessagePage extends StatelessWidget {
     {
       'name': 'Béo Pizza Restaurant',
       'avatarUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFQv4gzmNtZTnbl7lQMMmV5JWDO2_fIO2luA&s',
-      'lastMessage': 'Cảm ơn bạn đã đặt hàng!',
+      'lastMessage': 'Thanks for your order!',
       'timestamp': DateTime.now().subtract(Duration(minutes: 5)),
     },
     {
       'name': 'Béo Shipper',
       'avatarUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnihI8ux-tT_Z1JF8toQIn05jA8PO--cdCJELNtoYDXoA2C1FbkjQLE34NTjbsvyo0nXU&usqp=CAU',
-      'lastMessage': 'Tôi đang trên đường đến nơi!',
+      'lastMessage': 'Im on the way!',
       'timestamp': DateTime.now().subtract(Duration(days: 1)),
     },
     {
       'name': 'Béo Shipper',
       'avatarUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnihI8ux-tT_Z1JF8toQIn05jA8PO--cdCJELNtoYDXoA2C1FbkjQLE34NTjbsvyo0nXU&usqp=CAU',
-      'lastMessage': 'Tôi đang trên đường đến nơi!',
+      'lastMessage': 'Im on the way!',
       'timestamp': DateTime.now().subtract(Duration(hours: 1)),
     },
     {
       'name': 'Béo Shipper',
       'avatarUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnihI8ux-tT_Z1JF8toQIn05jA8PO--cdCJELNtoYDXoA2C1FbkjQLE34NTjbsvyo0nXU&usqp=CAU',
-      'lastMessage': 'Tôi đang trên đường đến nơi!',
+      'lastMessage': 'Im on the way!',
       'timestamp': DateTime.now().subtract(Duration(days: 1)),
     },
   ];
