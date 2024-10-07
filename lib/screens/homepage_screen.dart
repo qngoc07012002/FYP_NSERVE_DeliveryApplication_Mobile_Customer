@@ -3,6 +3,7 @@ import 'package:deliveryapplication_mobile_customer/screens/restaurant_filter_sc
 import 'package:deliveryapplication_mobile_customer/screens/restaurantdetail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/reserve_geo.dart';
 import 'bookbike_screen.dart';
@@ -18,15 +19,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String? token;
   String selectedLocation = "Loading..."; // Placeholder text
   int _selectedIndex = 0;
   final LocationService locationService = LocationService();
   double? latitude;
   double? longitude;
+
   @override
   void initState() {
     super.initState();
-    _updateLocation(); // Fetch location when the page loads
+    _loadToken();
+    _updateLocation();
+
+  }
+
+  Future<void> _loadToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    token = prefs.getString('jwt_token');
+    print(token);
   }
 
   Future<void> _updateLocation() async {
