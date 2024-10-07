@@ -3,6 +3,9 @@ import 'dart:ui';
 class Constant {
 
   // ignore: constant_identifier_names
+  static const BACKEND_URL = "http://localhost:8080/nserve";
+
+  // ignore: constant_identifier_names
   static const KEY_BASE_URL = "https://it-fresher.edu.vn/nms";
 
   // ignore: constant_identifier_names
