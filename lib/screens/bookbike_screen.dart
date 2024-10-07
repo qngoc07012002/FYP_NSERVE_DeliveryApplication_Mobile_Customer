@@ -130,7 +130,7 @@ class _RideBookingPageState extends State<RideBookingPage> {
                         startDetails[index]['geometry']['location']['lat'],
                       )).toJson(),
                   circleColor: Colors.blue.value,
-                  circleRadius: 12.0,
+                  circleRadius: 2,
                 ),
               );
             });

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:deliveryapplication_mobile_customer/screens/homepage_screen.dart';
 import 'package:flutter/material.dart';
 
 class VerificationPage extends StatefulWidget {
@@ -123,6 +124,12 @@ class _VerificationPageState extends State<VerificationPage> {
 
                   String otpCode = _controllers.map((controller) => controller.text).join();
                   print("Submit verification code: $otpCode");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(),
+                    ),
+                  );
                 },
                 child: Text('Submit', style: TextStyle(fontSize: 17,
                 fontWeight: FontWeight.bold,
