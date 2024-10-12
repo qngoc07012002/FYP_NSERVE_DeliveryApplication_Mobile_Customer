@@ -1,3 +1,4 @@
+import 'package:deliveryapplication_mobile_customer/screens/chat_screen.dart';
 import 'package:deliveryapplication_mobile_customer/screens/homepage_screen.dart';
 import 'package:deliveryapplication_mobile_customer/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "ABC",
-      home: HomePage(),
+      home: ChatApp(),
     );
   }
 }
