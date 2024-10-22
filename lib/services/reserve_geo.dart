@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationService {
-  final String apiKey = 'PLcr8iHV66JUgWFnOo4bf0oJFe3BaQw1H4Z64I1d'; // Your API Key
+  final String apiKey = 'PLcr8iHV66JUgWFnOo4bf0oJFe3BaQw1H4Z64I1d';
 
   Future<String> getAddressFromCurrentLocation() async {
     try {
@@ -12,6 +13,10 @@ class LocationService {
 
       Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setDouble('latitude', position.latitude);
+      await prefs.setDouble('latitude', position.longitude);
+      
       final response = await http.get(
         Uri.parse('https://rsapi.goong.io/Geocode?latlng=${position.latitude},${position.longitude}&api_key=$apiKey'),
       );
@@ -19,9 +24,13 @@ class LocationService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['status'] == 'OK') {
-          // Trích xuất tên của thành phần địa chỉ đầu tiên
           var firstResult = data['results'][0];
           if (firstResult['address_components'] != null && firstResult['address_components'].isNotEmpty) {
+            await prefs.setString('address', firstResult['address_components'][0]['long_name']);
+            
+            print("lat: ${position.latitude}" );
+            print("lng: ${position.longitude}");
+            print("address: ${firstResult['address_components'][0]['long_name']}");
             return firstResult['address_components'][0]['long_name'];
           } else {
             throw Exception('No address components found');

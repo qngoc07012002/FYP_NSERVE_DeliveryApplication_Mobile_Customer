@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationPickerScreen extends StatefulWidget {
   const LocationPickerScreen({super.key, required this.onLocationPicked});
@@ -74,6 +75,12 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
 
               if (details.isNotEmpty) {
                 final location = details[0]['geometry']['location'];
+
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.setString('latitude', coordinate['description']);
+                await prefs.setDouble('latitude', location['lat']);
+                await prefs.setDouble('address', location['lng']);
+
                 widget.onLocationPicked(
                   coordinate['description'],
                   location['lat'],
