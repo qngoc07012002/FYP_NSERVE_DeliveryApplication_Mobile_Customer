@@ -1,15 +1,22 @@
+import 'dart:convert';
 import 'package:deliveryapplication_mobile_customer/screens/profile_screen.dart';
 import 'package:deliveryapplication_mobile_customer/screens/restaurant_filter_screen.dart';
 import 'package:deliveryapplication_mobile_customer/screens/restaurantdetail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
+import '../dto/response/RestaurantResponse.dart';
 import '../services/reserve_geo.dart';
+import '../ultilities/Constant.dart';
 import 'bookbike_screen.dart';
 import 'locationpicker_screen.dart';
 import 'message_screen.dart';
 import 'order_screen.dart';
+
+const String apiUrl = Constant.RESTAURANT_URL;
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,19 +27,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String? token;
-  String selectedLocation = "Loading..."; // Placeholder text
+  String selectedLocation = "Loading...";
   int _selectedIndex = 0;
   final LocationService locationService = LocationService();
-  double? latitude;
-  double? longitude;
-
+  List<RestaurantResponse> restaurants = [];
   @override
   void initState() {
     super.initState();
     _loadToken();
     _updateLocation();
+    _fetchRestaurants();
+
 
   }
+
+
 
   Future<void> _loadToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -54,6 +63,22 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _fetchRestaurants() async {
+    try {
+      _updateLocation();
+      final response = await http.get(Uri.parse(apiUrl));
+      if (response.statusCode == 200) {
+        List<dynamic> jsonList = json.decode(response.body);
+        setState(() {
+          restaurants = jsonList.map((json) => RestaurantResponse.fromJson(json)).toList();
+        });
+      } else {
+        throw Exception(response.statusCode);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   void _pickLocation() async {
     final result = await Navigator.push(
@@ -61,10 +86,12 @@ class _HomePageState extends State<HomePage> {
       MaterialPageRoute(
         builder: (context) => LocationPickerScreen(
           onLocationPicked: (address, lat, lng) {
-            setState(() {
+            setState(()  {
               selectedLocation = address.split(',').first;
-              latitude = lat;
-              longitude = lng;
+
+              print("lat: ${lat}" );
+              print("lng: ${lng}");
+              print("address: ${selectedLocation}");
             });
           },
         ),
@@ -75,22 +102,25 @@ class _HomePageState extends State<HomePage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      // Here you can handle navigation logic based on the selected index
       print('Selected index: $_selectedIndex');
     });
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          _buildHomePage(), // The home page content
-          RideBookingPage(),
-          MessagePage(),
-          ProfilePage(),
-        ],
+      body: RefreshIndicator(
+        onRefresh: _fetchRestaurants,
+        child: IndexedStack(
+          index: _selectedIndex,
+          children: [
+            _buildHomePage(),
+            RideBookingPage(),
+            MessagePage(),
+            ProfilePage(),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -120,131 +150,122 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildHomePage() {
-    return RefreshIndicator(onRefresh: _updateLocation, child: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Pick Location & Search Bar
-          Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFF39c5c8), // Màu xanh chủ đạo
-              borderRadius: const BorderRadius.vertical(
-                bottom: Radius.circular(20.0), // Bo tròn góc dưới
+    return RefreshIndicator(
+      onRefresh: _fetchRestaurants,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Pick Location & Search Bar
+            Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFF39c5c8),
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(20.0),
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 40,
+                  ),
+                  GestureDetector(
+                    onTap: _pickLocation,
+                    child: Row(
+                      children: [
+                        const Icon(Icons.location_on, color: Colors.white),
+                        const SizedBox(width: 4.0),
+                        Text(
+                          selectedLocation + ' ',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const Icon(Icons.edit, color: Colors.white),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search for food or restaurants',
+                      prefixIcon: const Icon(Icons.search, color: Color(0xFF39c5c8)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    onSubmitted: _search,
+                  ),
+                ],
               ),
             ),
-            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 40,
-                ),
-                GestureDetector(
-                  onTap: _pickLocation,
-                  child: Row(
+            const SizedBox(height: 24.0),
+
+            // Food Categories
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Categories',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const Icon(Icons.location_on, color: Colors.white),
-                      const SizedBox(width: 4.0),
-                      Text(
-                        selectedLocation + ' ',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const Icon(Icons.edit, color: Colors.white),
+                      _buildCategoryItem('Pizza', Icons.local_pizza),
+                      _buildCategoryItem('Sushi', Icons.ramen_dining),
+                      _buildCategoryItem('Burgers', Icons.fastfood),
+                      _buildCategoryItem('Salads', Icons.local_dining),
                     ],
                   ),
-                ),
-                const SizedBox(height: 16.0),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search for food or restaurants',
-                    prefixIcon: const Icon(Icons.search, color: Color(0xFF39c5c8)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide.none,
+                ],
+              ),
+            ),
+            const SizedBox(height: 24.0),
+
+            // Stores List
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Restaurants',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                    filled: true,
-                    fillColor: Colors.white,
                   ),
-                  onSubmitted: _search,
-                ),
-              ],
+                  const SizedBox(height: 8.0),
+                  // Use the fetched restaurant data here
+                  for (var restaurant in restaurants)
+                    _buildStoreItem(
+                      name: restaurant.restaurantName,
+                      imageUrl: restaurant.imgUrl,
+                      description: restaurant.description,
+                      rating: restaurant.rating,
+                    ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 24.0),
-
-          // Food Categories
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Categories',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildCategoryItem('Pizza', Icons.local_pizza),
-                    _buildCategoryItem('Sushi', Icons.ramen_dining),
-                    _buildCategoryItem('Burgers', Icons.fastfood),
-                    _buildCategoryItem('Salads', Icons.local_dining),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24.0),
-
-          // Stores List
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Restaurants',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                _buildStoreItem(
-                  name: 'Pizza Hut',
-                  imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFc46glG2RnSW-wnlDZKghM-cmUlqskpIZA&s',
-                  description: 'Best pizza in town',
-                  rating: 4.5,
-                ),
-                _buildStoreItem(
-                  name: 'Sushi Bar',
-                  imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFc46glG2RnSW-wnlDZKghM-cmUlqskpIZA&s',
-                  description: 'Fresh sushi and more',
-                  rating: 4.8,
-                ),
-                _buildStoreItem(
-                  name: 'Burger King',
-                  imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFc46glG2RnSW-wnlDZKghM-cmUlqskpIZA&s',
-                  description: 'Delicious burgers and fries',
-                  rating: 4.3,
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ));
+    );
   }
-
-
 
   void _search(String query) {
     print('Searching for $query');
@@ -260,14 +281,12 @@ class _HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: () {
         print('Category $title clicked');
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FilterPage(),
-            ),
-          );
-
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FilterPage(),
+          ),
+        );
       },
       child: Column(
         children: [
@@ -300,45 +319,56 @@ class _HomePageState extends State<HomePage> {
         );
       },
       child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0), // Bo góc cho Card
-        ),
-        elevation: 5,
+        elevation: 4,
         margin: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.horizontal(left: Radius.circular(12.0)), // Bo góc trái cho hình ảnh
-              child: Image.network(
-                imageUrl,
-                width: 120, // Kích thước hình ảnh
-                height: 120,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Image.network(
+                Constant.IMAGE_URL + imageUrl,
+                width: 80,
+                height: 80,
                 fit: BoxFit.cover,
+                errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                  return Image.asset(
+                    'assets/images/food_image.png',
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
+                  );
+                },
               ),
-            ),
-            const SizedBox(width: 8.0),
-            Expanded(
-              child: ListTile(
-                title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text(description),
-                trailing: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+
+              const SizedBox(width: 16.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.star, color: Colors.amber),
-                    Text(rating.toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                    Text(
+                      name,
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 4.0),
+                    Text(
+                      description,
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                    const SizedBox(height: 4.0),
+                    Row(
+                      children: [
+                        const Icon(Icons.star, color: Colors.yellow, size: 16),
+                        const SizedBox(width: 4.0),
+                        Text(rating.toString()),
+                      ],
+                    ),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    home: HomePage(),
-  ));
 }
