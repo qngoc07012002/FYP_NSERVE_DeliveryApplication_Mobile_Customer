@@ -130,7 +130,7 @@ class _RideBookingPageState extends State<RideBookingPage> {
                         startDetails[index]['geometry']['location']['lat'],
                       )).toJson(),
                   circleColor: Colors.blue.value,
-                  circleRadius: 2,
+                  circleRadius: 5,
                 ),
               );
             });
@@ -227,7 +227,7 @@ class _RideBookingPageState extends State<RideBookingPage> {
                         endDetails[index]['geometry']['location']['lat'],
                       )).toJson(),
                   circleColor: Colors.red.value,
-                  circleRadius: 12.0,
+                  circleRadius: 5,
                 ),
               );
             });
@@ -306,8 +306,8 @@ class _RideBookingPageState extends State<RideBookingPage> {
      "paint":{
      "line-join":"round",
      "line-cap":"round",
-     "line-color":"rgb(51, 51, 255)",
-     "line-width":9.0
+     "line-color":"rgb(57, 197, 200)",
+     "line-width":3.0
      }
      }""";
 
