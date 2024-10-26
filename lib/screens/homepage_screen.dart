@@ -225,10 +225,10 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildCategoryItem('Pizza', Icons.local_pizza),
-                      _buildCategoryItem('Sushi', Icons.ramen_dining),
-                      _buildCategoryItem('Burgers', Icons.fastfood),
-                      _buildCategoryItem('Salads', Icons.local_dining),
+                      _buildCategoryItem('Rice', Icons.rice_bowl),
+                      _buildCategoryItem('Drink', Icons.local_drink),
+                      _buildCategoryItem('Fast Food', Icons.fastfood),
+                      _buildCategoryItem('Desserts', Icons.cake),
                     ],
                   ),
                 ],

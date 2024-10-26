@@ -17,5 +17,5 @@ class Constant {
   // ignore: constant_identifier_names
   static const RESTAURANT_URL = "$BACKEND_URL/restaurants";
 
-
+  //Nếu là Emulator ở máy thì dùng 10.0.2.2 nếu ngoài thì vào ipconfig check ipv4
 }

@@ -35,9 +35,9 @@ class _ChatScreenState extends State<ChatScreen> {
   void connectToWebSocket() {
     stompClient = StompClient(
       config: StompConfig(
-        url: 'ws://192.168.56.2:8080/spring-boot-tutorial', // Adjusted WebSocket URL
+        url: 'ws://192.168.56.2:8080/websocket',
         onConnect: onConnect,
-        onWebSocketError: (dynamic error) => print(error.toString()),
+        onWebSocketError: (dynamic error) => print('WebSocket Error: $error'),
       ),
     );
 
@@ -47,11 +47,11 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void onConnect(StompFrame frame) {
     stompClient!.subscribe(
-      destination: '/topic/greetings',  // Adjusted to match the Spring Boot destination
+      destination: '/topic/greetings',
       callback: (StompFrame frame) {
         if (frame.body != null) {
           setState(() {
-            messages.add(frame.body!);  // Add received message to the list
+            messages.add(frame.body!);
           });
         }
       },
@@ -59,12 +59,16 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void sendMessage(String message) {
-    stompClient!.send(
-      destination: '/app/hello',  // Adjusted to match the Spring Boot endpoint
-      body: json.encode({'name': message}),  // Adjusted to send the name in the correct format
-    );
-    _controller.clear();  // Clear the input field after sending
-    print("Send Success");
+    if (stompClient != null && stompClient!.connected) {
+      stompClient!.send(
+        destination: '/app/chat.send',  // Adjusted to match the Spring Boot endpoint
+        body: json.encode({'content': message, 'sender': 'Your Name'}),  // Adjust to include sender
+      );
+      _controller.clear();
+      print("Send Success");
+    } else {
+      print("Cannot send message, not connected.");
+    }
   }
 
   @override
@@ -94,7 +98,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: TextField(
                       controller: _controller,
-                      decoration: InputDecoration(labelText: 'Enter your name'),
+                      decoration: InputDecoration(labelText: 'Enter your message'),
                     ),
                   ),
                   IconButton(
