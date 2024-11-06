@@ -2,53 +2,25 @@ import 'Category.dart';
 import 'Restaurant.dart';
 
 class Food {
-  String id;
-  Category category;
-  Restaurant restaurant;
+  String? id;
   String name;
+  String imageUrl;
   String description;
+  int quantity;
+  bool isAvailable;
   double price;
-  String imgUrl;
-  DateTime createAt;
-  DateTime updateAt;
 
-  Food({
-    required this.id,
-    required this.category,
-    required this.restaurant,
-    required this.name,
-    required this.description,
-    required this.price,
-    required this.imgUrl,
-    required this.createAt,
-    required this.updateAt,
-  });
+  Food(this.id, this.name, this.imageUrl, this.description, this.quantity, this.isAvailable, this.price, );
 
   factory Food.fromJson(Map<String, dynamic> json) {
     return Food(
-      id: json['id'],
-      category: Category.fromJson(json['category']),
-      restaurant: Restaurant.fromJson(json['restaurant']),
-      name: json['name'],
-      description: json['description'],
-      price: json['price'].toDouble(),
-      imgUrl: json['imgUrl'],
-      createAt: DateTime.parse(json['createAt']),
-      updateAt: DateTime.parse(json['updateAt']),
+      json['id'] as String?,
+      json['name'] as String,
+      json['imgUrl'] as String,
+      json['description'] as String,
+      json['quantity'] ?? 0,
+      json['status'] == 'ACTIVE',
+      json['price'] as double,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'category': category.toJson(),
-      'restaurant': restaurant.toJson(),
-      'name': name,
-      'description': description,
-      'price': price,
-      'imgUrl': imgUrl,
-      'createAt': createAt.toIso8601String(),
-      'updateAt': updateAt.toIso8601String(),
-    };
   }
 }

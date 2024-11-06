@@ -1,12 +1,12 @@
 class Location {
-  String id;
-  String longitude;
-  String latitude;
+  String? id;
+  String? longitude;
+  String? latitude;
 
   Location({
-    required this.id,
-    required this.longitude,
-    required this.latitude,
+    this.id,
+    this.longitude,
+    this.latitude,
   });
 
   factory Location.fromJson(Map<String, dynamic> json) {
