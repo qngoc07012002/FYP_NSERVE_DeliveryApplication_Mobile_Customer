@@ -1,5 +1,12 @@
 import 'package:deliveryapplication_mobile_customer/screens/restaurantdetail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../controller/home_controller.dart';
+import '../entity/Category.dart';
+import '../entity/Restaurant.dart';
+import '../ultilities/Constant.dart';
 
 class FilterPage extends StatefulWidget {
   const FilterPage({super.key});
@@ -9,40 +16,15 @@ class FilterPage extends StatefulWidget {
 }
 
 class _FilterPageState extends State<FilterPage> {
+
+  final HomeController controller = Get.find();
   String _searchQuery = '';
   String _selectedCategory = 'All';
 
-  final List<String> _categories = ['All', 'Pizza', 'Sushi', 'Burgers', 'Salads'];
-  final List<Map<String, dynamic>> _stores = [
-    {
-      'name': 'Pizza Hut',
-      'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFc46glG2RnSW-wnlDZKghM-cmUlqskpIZA&s',
-      'description': 'Best pizza in town',
-      'rating': 4.5,
-      'category': 'Pizza',
-    },
-    {
-      'name': 'Sushi Bar',
-      'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFc46glG2RnSW-wnlDZKghM-cmUlqskpIZA&s',
-      'description': 'Fresh sushi and more',
-      'rating': 4.8,
-      'category': 'Sushi',
-    },
-    {
-      'name': 'Burger King',
-      'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyFc46glG2RnSW-wnlDZKghM-cmUlqskpIZA&s',
-      'description': 'Delicious burgers and fries',
-      'rating': 4.3,
-      'category': 'Burgers',
-    },
-  ];
-
-  List<Map<String, dynamic>> _getFilteredStores() {
-    return _stores.where((store) {
-      final matchesCategory = _selectedCategory == 'All' || store['category'] == _selectedCategory;
-      final matchesQuery = store['name'].toLowerCase().contains(_searchQuery.toLowerCase());
-      return matchesCategory && matchesQuery;
-    }).toList();
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchCategories();
   }
 
   @override
@@ -71,6 +53,7 @@ class _FilterPageState extends State<FilterPage> {
               setState(() {
                 _searchQuery = value;
               });
+              controller.searchRestaurants(value);
             },
           ),
         ),
@@ -79,61 +62,82 @@ class _FilterPageState extends State<FilterPage> {
           child: Container(
             color: Colors.white, // Background color for filter section
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: DropdownButton<String>(
-              value: _selectedCategory,
-              items: _categories.map((category) {
-                return DropdownMenuItem<String>(
-                  value: category,
-                  child: Text(
-                    category,
-                    style: const TextStyle(color: Colors.black),
-                  ),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _selectedCategory = value!;
-                });
-              },
-              isExpanded: true,
-              underline: Container(), // Remove underline
-              icon: Icon(Icons.filter_list, color: Color(0xFF39c5c8)),
-              dropdownColor: Colors.white, // Match filter section background
-              style: const TextStyle(color: Colors.black),
-            ),
+            child: Obx(() {
+              // Use the categories from the controller
+              List<String> categories = ['All'] + controller.categories.map((category) => category.name!).toList();
+              return DropdownButton<String>(
+                value: _selectedCategory,
+                items: categories.map((category) {
+                  return DropdownMenuItem<String>(
+                    value: category,
+                    child: Text(
+                      category,
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedCategory = value!;
+
+                    if (_selectedCategory == 'All') {
+                      controller.filteredRestaurants.value = controller.restaurants;
+                    } else {
+                      final category = controller.categories.firstWhere(
+                            (category) => category.name == _selectedCategory,
+                        orElse: () => Category(id: '', name: ''),
+                      );
+                      controller.filterRestaurantsByCategory(category.id!);
+                    }
+                  });
+                },
+
+                isExpanded: true,
+                underline: Container(), // Remove underline
+                icon: Icon(Icons.filter_list, color: Color(0xFF39c5c8)),
+                dropdownColor: Colors.white, // Match filter section background
+                style: const TextStyle(color: Colors.black),
+              );
+            }),
           ),
         ),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemCount: _getFilteredStores().length,
-        itemBuilder: (context, index) {
-          final store = _getFilteredStores()[index];
-          return _buildStoreItem(
-            name: store['name'],
-            imageUrl: store['imageUrl'],
-            description: store['description'],
-            rating: store['rating'],
-          );
-        },
-      ),
+      body: Obx(() {
+        final filteredStores = controller.filteredRestaurants;
+        return ListView.builder(
+          padding: const EdgeInsets.all(16.0),
+          itemCount: filteredStores.length,
+          itemBuilder: (context, index) {
+            final store = filteredStores[index];
+            return _buildStoreItem(
+              id: store.id!,
+              name: store.restaurantName!,
+              imageUrl: store.imgUrl!,
+              description: store.description!,
+              rating: store.rating!,
+            );
+          },
+        );
+      }),
     );
   }
 
   Widget _buildStoreItem({
+    required String id,
     required String name,
     required String imageUrl,
     required String description,
     required double rating,
   }) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RestaurantDetailPage(),
-          ),
-        );
+      onTap: () {
+        Get.to(() => RestaurantDetailPage(restaurant: Restaurant(
+          id: id,
+          restaurantName: name,
+          imgUrl: imageUrl,
+          description: description,
+          rating: rating,
+        ),));
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -146,7 +150,7 @@ class _FilterPageState extends State<FilterPage> {
             ClipRRect(
               borderRadius: const BorderRadius.horizontal(left: Radius.circular(12.0)), // Rounded left corners for image
               child: Image.network(
-                imageUrl,
+                Constant.BACKEND_URL + imageUrl,
                 width: 120, // Image size
                 height: 120,
                 fit: BoxFit.cover,
