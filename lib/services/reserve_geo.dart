@@ -15,7 +15,7 @@ class LocationService {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setDouble('latitude', position.latitude);
-      await prefs.setDouble('latitude', position.longitude);
+      await prefs.setDouble('longitude', position.longitude);
       
       final response = await http.get(
         Uri.parse('https://rsapi.goong.io/Geocode?latlng=${position.latitude},${position.longitude}&api_key=$apiKey'),
@@ -26,12 +26,12 @@ class LocationService {
         if (data['status'] == 'OK') {
           var firstResult = data['results'][0];
           if (firstResult['address_components'] != null && firstResult['address_components'].isNotEmpty) {
-            await prefs.setString('address', firstResult['address_components'][0]['long_name']);
-            
+           // await prefs.setString('address', firstResult['address_components'][0]['long_name']);
+            await prefs.setString('address', firstResult['formatted_address']);
             print("lat: ${position.latitude}" );
             print("lng: ${position.longitude}");
-            print("address: ${firstResult['address_components'][0]['long_name']}");
-            return firstResult['address_components'][0]['long_name'];
+            print("address: ${firstResult['formatted_address']}");
+            return firstResult['formatted_address'];
           } else {
             throw Exception('No address components found');
           }
