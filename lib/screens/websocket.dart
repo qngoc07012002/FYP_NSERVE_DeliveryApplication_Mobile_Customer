@@ -34,7 +34,9 @@ class _ChatRoomState extends State<ChatRoom> {
     // Cấu hình STOMP Client
     stompClient = StompClient(
       config: StompConfig.sockJS(
-        url: 'http://192.168.56.1:8080/nserve/ws', // Đảm bảo rằng URL này là đúng
+        url: 'http://10.0.2.2:8080/nserve/ws', // Đảm bảo rằng URL này là đúng
+        stompConnectHeaders: {'userId': "123"},
+        webSocketConnectHeaders: {'userId': "123"},
         onConnect: onConnectCallback,
         onWebSocketError: (dynamic error) => print('WebSocket error: $error'),
       ),
