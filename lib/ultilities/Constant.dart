@@ -24,9 +24,18 @@ class Constant {
   static const FOOD_URL = "$BACKEND_URL/foods";
 
   // ignore: constant_identifier_names
+  static const ORDER_URL = "$BACKEND_URL/orders";
+
+  // ignore: constant_identifier_names
+  static const SHIPPING_FEE_URL = "$BACKEND_URL/orders/calculate-shipping-fee";
+
+  // ignore: constant_identifier_names
+  static const WEBSOCKET_URL = "$BACKEND_URL/ws";
+
+  // ignore: constant_identifier_names
   static const IMG_URL = "https://res.cloudinary.com/dsdowcig9";
 
-  static const JWT = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJxbmdvYzA3MDEyMDAyIiwic3ViIjoiMTk2NTE3NmEtYzFhOS00NzQ3LWIxMGYtMTRkNGIyMzY1ODdhIiwiZXhwIjoxNzMwNTg1MTYyLCJpYXQiOjE3MzA1ODE1NjIsImp0aSI6IjY4MGYzYTRmLWJiN2UtNDI0ZC1iMzA2LTM4YjNlOGM3MzdjMiIsInNjb3BlIjoiUk9MRV9DVVNUT01FUiBST0xFX1JFU1RBVVJBTlQgUk9MRV9BRE1JTiBST0xFX0RSSVZFUiJ9.JwWdMINAD74nGzovkFPGdZo9ogrF1OPdSHCGAZGhgyaHJFVBEs20UthXtghx5h2QfjfZbQjJ90jXiRnE4gbmwA";
+  static const JWT = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJxbmdvYzA3MDEyMDAyIiwic3ViIjoiOTQwZjJlM2ItNDY1Yi00ZjI1LWIzNTQtZDM2YWUxOGZiZjMyIiwiZXhwIjoxNzMxNTQxMDY4LCJpYXQiOjE3MzE1Mzc0NjgsImp0aSI6ImM1ZWQxMzQ5LTBkYjMtNDUxZS1iMWZjLTEzMmMzYWMxZGNlYiIsInNjb3BlIjoiUk9MRV9EUklWRVIgUk9MRV9DVVNUT01FUiBST0xFX0FETUlOIFJPTEVfUkVTVEFVUkFOVCJ9.bMdphBOke3dEOW9M9Zy0lVtF4XPPEHU5yf41m2K8wOf7u1xrIJnx3_Zql8d6iUXDcGeprGQbHUo_pxBYGs3FSA";
 
 
   //Nếu là Emulator ở máy thì dùng 10.0.2.2 nếu ngoài thì vào ipconfig check ipv4
