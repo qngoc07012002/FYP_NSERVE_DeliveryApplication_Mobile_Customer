@@ -77,9 +77,13 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                 final location = details[0]['geometry']['location'];
 
                 SharedPreferences prefs = await SharedPreferences.getInstance();
-                await prefs.setString('latitude', coordinate['description']);
+                await prefs.setString('address', coordinate['description']);
                 await prefs.setDouble('latitude', location['lat']);
-                await prefs.setDouble('address', location['lng']);
+                await prefs.setDouble('longitude', location['lng']);
+                //
+                print("lat: " + location['lat'].toString());
+                print("lng: " + location['lng'].toString());
+                print("address: " + coordinate['description']);
 
                 widget.onLocationPicked(
                   coordinate['description'],
