@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget {
                 const Icon(Icons.location_on, color: Colors.white),
                 const SizedBox(width: 4.0),
                 Obx(() => Text(
-                  controller.selectedLocation.value + ' ',
+                  '${controller.selectedLocation.value.split(',').first} ',
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                 )),
                 const Icon(Icons.edit, color: Colors.white),
@@ -163,11 +163,7 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: 8.0),
           for (var restaurant in controller.restaurants)
             _buildStoreItem(
-              id: restaurant.id!,
-              name: restaurant.restaurantName!,
-              imageUrl: restaurant.imgUrl!,
-              description: restaurant.description!,
-              rating: restaurant.rating!,
+              restaurant: restaurant,
             ),
         ],
       ),
@@ -175,21 +171,11 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildStoreItem({
-    required String id,
-    required String name,
-    required String imageUrl,
-    required String description,
-    required double rating,
+    required Restaurant restaurant,
   }) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => RestaurantDetailPage(restaurant: Restaurant(
-          id: id,
-          restaurantName: name,
-          imgUrl: imageUrl,
-          description: description,
-          rating: rating,
-        ),));
+        Get.to(() => RestaurantDetailPage(restaurant: restaurant,));
       },
       child: Card(
         elevation: 4,
@@ -199,7 +185,7 @@ class HomePage extends StatelessWidget {
           child: Row(
             children: [
               Image.network(
-                Constant.BACKEND_URL + imageUrl,
+                Constant.BACKEND_URL + restaurant.imgUrl!,
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,
@@ -212,14 +198,14 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text(restaurant.restaurantName!, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 4.0),
-                    Text(description, style: const TextStyle(color: Colors.grey)),
+                    Text(restaurant.description!, style: const TextStyle(color: Colors.grey)),
                     const SizedBox(height: 8.0),
                     Row(
                       children: [
                         const Icon(Icons.star, color: Colors.yellow),
-                        Text('$rating'),
+                        Text('${restaurant.rating}'),
                       ],
                     ),
                   ],

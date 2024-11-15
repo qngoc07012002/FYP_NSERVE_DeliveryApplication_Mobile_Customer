@@ -12,6 +12,7 @@ class RideBookingPage extends StatefulWidget {
 }
 
 class _RideBookingPageState extends State<RideBookingPage> {
+
   String selectedVehicle = 'Motorbike';
   MapboxMap? mapboxMap;
 
