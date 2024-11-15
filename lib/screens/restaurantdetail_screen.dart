@@ -2,6 +2,7 @@ import 'package:deliveryapplication_mobile_customer/screens/placeorder_screen.da
 import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // Import Get package for state management
 import '../controller/food_controller.dart';
+import '../controller/order_controller.dart';
 import '../entity/Restaurant.dart';
 import '../entity/Food.dart';
 import '../ultilities/Constant.dart';
@@ -19,6 +20,7 @@ class RestaurantDetailPage extends StatefulWidget {
 class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
   num _totalAmount = 0;
   final FoodController _foodController = Get.put(FoodController());
+  final OrderController _orderController = Get.put(OrderController());
 
   @override
   void initState() {
@@ -164,19 +166,19 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
           ],
         );
       }),
-      bottomNavigationBar: InkWell(
+      bottomNavigationBar: _totalAmount > 0
+          ? InkWell(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OrderSummaryPage(),
-            ),
-          );
+          _orderController.selectedFoods.assignAll(
+              _foodController.foods.where((food) => food.quantity > 0));
+          _orderController.restaurant.value = widget.restaurant;
+          _orderController.totalAmount.value = _totalAmount.toDouble();
+          Get.to(OrderSummaryPage());
         },
         child: Container(
           padding: const EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            color: const Color(0xFF39c5c8),
+          decoration: const BoxDecoration(
+            color: Color(0xFF39c5c8),
             borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
           ),
           child: Row(
@@ -184,16 +186,24 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
             children: [
               const Text(
                 'Total:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
               Text(
                 '\$${_totalAmount.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
             ],
           ),
         ),
-      ),
+      )
+          : null,
+
     );
   }
 
@@ -212,4 +222,16 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
       });
     }
   }
+
+  List<Map<String, dynamic>> _getSelectedItems() {
+    return _foodController.foods
+        .where((food) => food.quantity > 0)
+        .map((food) => {
+      'name': food.name,
+      'quantity': food.quantity,
+      'total': food.price * food.quantity,
+    })
+        .toList();
+  }
+
 }
