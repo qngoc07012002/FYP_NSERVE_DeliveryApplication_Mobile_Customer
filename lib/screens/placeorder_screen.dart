@@ -195,7 +195,7 @@ class OrderSummaryPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
           onPressed: () {
-            // Logic to place the order
+            orderController.sendOrderRequest();
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF39c5c8),
