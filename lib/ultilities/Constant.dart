@@ -35,7 +35,7 @@ class Constant {
   // ignore: constant_identifier_names
   static const IMG_URL = "https://res.cloudinary.com/dsdowcig9";
 
-  static const JWT = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJxbmdvYzA3MDEyMDAyIiwic3ViIjoiOTQwZjJlM2ItNDY1Yi00ZjI1LWIzNTQtZDM2YWUxOGZiZjMyIiwiZXhwIjoxNzMxNTQxMDY4LCJpYXQiOjE3MzE1Mzc0NjgsImp0aSI6ImM1ZWQxMzQ5LTBkYjMtNDUxZS1iMWZjLTEzMmMzYWMxZGNlYiIsInNjb3BlIjoiUk9MRV9EUklWRVIgUk9MRV9DVVNUT01FUiBST0xFX0FETUlOIFJPTEVfUkVTVEFVUkFOVCJ9.bMdphBOke3dEOW9M9Zy0lVtF4XPPEHU5yf41m2K8wOf7u1xrIJnx3_Zql8d6iUXDcGeprGQbHUo_pxBYGs3FSA";
+  static const JWT = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJxbmdvYzA3MDEyMDAyIiwic3ViIjoiOTQwZjJlM2ItNDY1Yi00ZjI1LWIzNTQtZDM2YWUxOGZiZjMyIiwiZXhwIjozNjE3MzE3NjYyODYsImlhdCI6MTczMTc2NjI4NiwianRpIjoiMmEzNTQ5OTAtOTg0NS00YzJhLWFiYWYtNjgyOTM1ZDc2NTAwIiwic2NvcGUiOiJST0xFX1JFU1RBVVJBTlQgUk9MRV9DVVNUT01FUiBST0xFX0FETUlOIFJPTEVfRFJJVkVSIn0.ZJuDaI0Lp_H-p_qDGpSgTaVxgdQDnuYlmRQDJOxnmFYlKKJf4LsjZakFxTwlNpqKJF4tN7KvFsq5OcO9VF2Lcg";
 
 
   //Nếu là Emulator ở máy thì dùng 10.0.2.2 nếu ngoài thì vào ipconfig check ipv4
