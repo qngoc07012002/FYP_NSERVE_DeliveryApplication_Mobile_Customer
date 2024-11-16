@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,9 @@ class WebSocketService extends GetxService {
     stompClient = StompClient(
       config: StompConfig.sockJS(
         url: Constant.WEBSOCKET_URL,
+        webSocketConnectHeaders: {
+          'Authorization': 'Bearer ${Constant.JWT}',
+        },
         onConnect: onConnect,
         onWebSocketError: (error) => print('WebSocket Error: $error'),
         onStompError: (error) => print('STOMP Error: $error'),
@@ -55,6 +59,19 @@ class WebSocketService extends GetxService {
 
     trySubscribe();
   }
+
+  void sendMessage(String destination, Map<String, dynamic> body) {
+    if (stompClient?.connected == true) {
+      stompClient?.send(
+        destination: destination,
+        body: jsonEncode(body),
+      );
+      print("Message sent to $destination: ${jsonEncode(body)}");
+    } else {
+      print("WebSocket is not connected. Unable to send message.");
+    }
+  }
+
 
   void disconnect() {
     stompClient?.deactivate();
