@@ -124,7 +124,7 @@ class OrderController extends GetxController {
         orderItems: orderItems,
         shippingFee: shippingFee.value,
         distance: distance.value,
-        totalPrice: totalAmount.value + shippingFee.value,
+        totalPrice: totalAmount.value,
         orderType: "FOOD",
         paymentMethod: selectedPaymentMethod.value,
       );
