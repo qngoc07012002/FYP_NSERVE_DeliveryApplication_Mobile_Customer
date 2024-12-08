@@ -1,7 +1,7 @@
 class Location {
   String? id;
-  String? longitude;
-  String? latitude;
+  double? longitude;
+  double? latitude;
   String? address;
 
   Location({

@@ -9,7 +9,6 @@ class FoodController extends GetxController {
   var foods = <Food>[].obs;
   var isLoading = false.obs;
 
-  // Fetch food data from API
   Future<void> fetchFoods(String restaurantId) async {
     isLoading(true);
     try {
@@ -19,9 +18,6 @@ class FoodController extends GetxController {
       if (response.statusCode == 200) {
         final data = json.decode(response.body)['result'];
         foods.value = (data as List).map((food) => Food.fromJson(food)).toList();
-        for (var food in foods){
-          print("FOOD: ${food.name} ${food.quantity} ${food.description}");
-        }
       } else {
         throw Exception('Failed to load foods');
       }

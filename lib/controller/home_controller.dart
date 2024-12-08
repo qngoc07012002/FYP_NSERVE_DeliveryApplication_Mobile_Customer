@@ -29,7 +29,7 @@ class HomeController extends GetxController {
 
   Future<void> _loadToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('jwt_token', Constant.JWT); // Testing Enviroment
+    await prefs.setString('jwt_token', Constant.JWT);
     token.value = prefs.getString('jwt_token') ?? '';
     print(token.value);
 

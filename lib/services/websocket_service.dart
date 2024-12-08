@@ -35,15 +35,6 @@ class WebSocketService extends GetxService {
 
   void onConnect(StompFrame frame) {
     print('Connected to WebSocket server');
-    // stompClient?.subscribe(
-    //   destination: '/queue/notifications/123',
-    //   callback: (StompFrame frame) {
-    //     if (frame.body != null) {
-    //       print('Received message: ${frame.body}');
-    //       showNotificationDialog(frame.body!);
-    //     }
-    //   },
-    // );
   }
 
   void subscribe(String destination, Function(StompFrame) callback) {

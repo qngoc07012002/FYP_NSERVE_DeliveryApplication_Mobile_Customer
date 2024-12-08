@@ -1,11 +1,21 @@
 import 'package:deliveryapplication_mobile_customer/controller/home_controller.dart';
+import 'package:deliveryapplication_mobile_customer/screens/orderprocessing_screen.dart';
+import 'package:deliveryapplication_mobile_customer/services/stripe_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/order_controller.dart';
 
-class OrderSummaryPage extends StatelessWidget {
-  final OrderController orderController = Get.find<OrderController>();  // Accessing the controller
-  final HomeController homeController = Get.find<HomeController>();
+class OrderSummaryPage extends StatefulWidget {
+  const OrderSummaryPage({super.key});
+
+  @override
+  State<OrderSummaryPage> createState() => _OrderSummaryPageState();
+}
+
+class _OrderSummaryPageState extends State<OrderSummaryPage> {
+  final OrderController orderController = Get.find();  // Accessing the controller
+  final HomeController homeController = Get.find();
+  String _selectedPaymentMethod = 'Cash';
   @override
   Widget build(BuildContext context) {
     orderController.calculateShippingFee();
@@ -154,37 +164,32 @@ class OrderSummaryPage extends StatelessWidget {
               const SizedBox(height: 24.0),
 
               // Payment Method
+              // Payment Method
               GestureDetector(
-                onTap: () {
-                  // Logic for selecting payment method
-                },
-                child: Obx(() {
-                  return Container(
-                    padding: const EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.0),
-                      boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.3), spreadRadius: 1, blurRadius: 5)],
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          orderController.selectedPaymentMethod.value == 'Cash'
-                              ? Icons.money_off
-                              : orderController.selectedPaymentMethod.value == 'Visa'
-                              ? Icons.credit_card
-                              : Icons.paypal,
-                          color: Color(0xFF39c5c8),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(orderController.selectedPaymentMethod.value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                        ),
-                        const Icon(Icons.arrow_drop_down, color: Color(0xFF39c5c8)),
-                      ],
-                    ),
-                  );
-                }),
+                onTap: _selectPaymentMethod,
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
+                    boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.3), spreadRadius: 1, blurRadius: 5)],
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        _selectedPaymentMethod == 'Cash'
+                            ? Icons.money_off
+                            : Icons.credit_card,
+                        color: Color(0xFF39c5c8),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(_selectedPaymentMethod, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      ),
+                      const Icon(Icons.arrow_drop_down, color: Color(0xFF39c5c8)),
+                    ],
+                  ),
+                ),
               ),
 
             ],
@@ -194,8 +199,16 @@ class OrderSummaryPage extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
-          onPressed: () {
-            orderController.sendOrderRequest();
+          onPressed: () async {
+           if (_selectedPaymentMethod == "Cash") {
+             orderController.sendOrderFoodRequest();
+           //  Get.to(OrderProcessingPage());
+             Get.to(() => OrderProcessingPage());
+           } else  if (await StripeService.instance.makePayment()){
+             orderController.sendOrderFoodRequest();
+             Get.to(() => OrderProcessingPage());
+           }
+
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF39c5c8),
@@ -210,4 +223,33 @@ class OrderSummaryPage extends StatelessWidget {
 
     );
   }
+
+  void _selectPaymentMethod() {
+    showModalBottomSheet<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return ListView(
+          children: [
+            ListTile(
+              leading: Icon(Icons.money_off, color: Colors.black),
+              title: Text('Cash'),
+              onTap: () => Navigator.pop(context, 'Cash'),
+            ),
+            ListTile(
+              leading: Icon(Icons.credit_card, color: Colors.black),
+              title: Text('Credit'),
+              onTap: () => Navigator.pop(context, 'Credit'),
+            ),
+          ],
+        );
+      },
+    ).then((selected) {
+      if (selected != null) {
+        setState(() {
+          _selectedPaymentMethod = selected;
+        });
+      }
+    });
+  }
 }
+

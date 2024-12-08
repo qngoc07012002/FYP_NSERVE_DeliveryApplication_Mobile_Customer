@@ -1,9 +1,11 @@
 class OrderItem {
+  String? foodId;
   String? foodName;
   int? quantity;
   double? totalPrice;
 
   OrderItem({
+    this.foodId,
     this.foodName,
     this.quantity,
     this.totalPrice,
@@ -11,9 +13,10 @@ class OrderItem {
 
   factory OrderItem.fromJson(Map<String, dynamic> json) {
     return OrderItem(
-      foodName: json['foodName'],
-      quantity: json['quantity'],
-      totalPrice: json['totalPrice']?.toDouble(),
+      foodId: json['foodId'] ?? '',
+      foodName: json['foodName'] ?? '',
+      quantity: json['quantity'] ?? 0,
+      totalPrice: json['totalPrice'] ?? 0.0,
     );
   }
 

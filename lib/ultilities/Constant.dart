@@ -18,6 +18,12 @@ class Constant {
   static const RESTAURANT_URL = "$BACKEND_URL/restaurants";
 
   // ignore: constant_identifier_names
+  static const ORDER_DRIVER_URL = "$ORDER_URL/driver";
+
+  // ignore: constant_identifier_names
+  static const ORDER_CUSTOMER_URL = "$ORDER_URL/customer";
+
+  // ignore: constant_identifier_names
   static const CATEGORY_URL = "$BACKEND_URL/categories";
 
   // ignore: constant_identifier_names
@@ -25,6 +31,18 @@ class Constant {
 
   // ignore: constant_identifier_names
   static const ORDER_URL = "$BACKEND_URL/orders";
+
+  // ignore: constant_identifier_names
+  static const CREATE_ORDER_URL = "$ORDER_URL/createOrder";
+
+  // ignore: constant_identifier_names
+  static const USER_URL = "$BACKEND_URL/users";
+
+  // ignore: constant_identifier_names
+  static const ORDER_RESTAURANT_URL = "$BACKEND_URL/orders/restaurant";
+
+  // ignore: constant_identifier_names
+  static const USER_INFO_URL = "$USER_URL/info";
 
   // ignore: constant_identifier_names
   static const SHIPPING_FEE_URL = "$BACKEND_URL/orders/calculate-shipping-fee";
@@ -35,8 +53,10 @@ class Constant {
   // ignore: constant_identifier_names
   static const IMG_URL = "https://res.cloudinary.com/dsdowcig9";
 
-  static const JWT = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJxbmdvYzA3MDEyMDAyIiwic3ViIjoiOTQwZjJlM2ItNDY1Yi00ZjI1LWIzNTQtZDM2YWUxOGZiZjMyIiwiZXhwIjozNjE3MzE3NjYyODYsImlhdCI6MTczMTc2NjI4NiwianRpIjoiMmEzNTQ5OTAtOTg0NS00YzJhLWFiYWYtNjgyOTM1ZDc2NTAwIiwic2NvcGUiOiJST0xFX1JFU1RBVVJBTlQgUk9MRV9DVVNUT01FUiBST0xFX0FETUlOIFJPTEVfRFJJVkVSIn0.ZJuDaI0Lp_H-p_qDGpSgTaVxgdQDnuYlmRQDJOxnmFYlKKJf4LsjZakFxTwlNpqKJF4tN7KvFsq5OcO9VF2Lcg";
+  static const JWT = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJxbmdvYzA3MDEyMDAyIiwic3ViIjoiOTQwZjJlM2ItNDY1Yi00ZjI1LWIzNTQtZDM2YWUxOGZiZjMyIiwiZXhwIjozNjE3MzM1MTQyMzksImlhdCI6MTczMzUxNDIzOSwianRpIjoiNjY1MjMwMTEtMzE4ZS00ZTUwLWI3NzktMWE1ZGRhMzkyYmU1Iiwic2NvcGUiOiJST0xFX0FETUlOIFJPTEVfUkVTVEFVUkFOVCBST0xFX0NVU1RPTUVSIFJPTEVfRFJJVkVSIn0.fyad8YgYSOMfiqFW7cdfIvjQGt2xuYyB45oM6PK-ze2HXMh_KrWFtjmJ26atRJsgyjuebTcGWJsBWosi-XMfQg";
 
+  static const stripePublishableKey = "pk_test_51MPfTSA5vKPlbljEeTnHusfYFriKpHPpUJe0KNQIc9xB638GPdWRWO5RnzrLBeD6Am9NInVocj4AtJKSBUUA9GS700cQv3HfFQ";
 
+  static const stripeSecretKey = "sk_test_51MPfTSA5vKPlbljExViQrrELBRTDDeoi3UskDs4Auz0eRsv7NwqzzcRjVpD2viglbbfsSnEcGGVXWIm2eWqRZXBD00bCckigP8";
   //Nếu là Emulator ở máy thì dùng 10.0.2.2 nếu ngoài thì vào ipconfig check ipv4
 }
