@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
-import '../entity/Location.dart';
-import '../entity/Order.dart';
-import '../entity/OrderItem.dart';
-import '../entity/Restaurant.dart';
-import '../entity/Food.dart';
+import '../entity/location_model.dart';
+import '../entity/order_model.dart';
+import '../entity/orderItem_model.dart';
+import '../entity/restaurant_model.dart';
+import '../entity/food_model.dart';
 import '../screens/locationpicker_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,6 +18,8 @@ import '../services/websocket_service.dart';
 import '../ultilities/Constant.dart';
 
 class OrderProcessingController extends GetxController {
+  RxBool hasOrder = false.obs;
+  RxBool isDelivering = false.obs;
 
   RxDouble lngStart = 108.23588990000007.obs;
   RxDouble latStart = 16.082184875000053.obs;
@@ -30,12 +32,12 @@ class OrderProcessingController extends GetxController {
 
   RxString storeName = ''.obs;
   RxString storeAddress = ''.obs;
-  RxString storeImageUrl = '/images/banhxeo.png'.obs;
+  RxString storeImageUrl = '/image/upload/v1733846519/restaurant.png'.obs;
 
 
   RxString driverName = ''.obs;
   RxString driverPhone = ''.obs;
-  RxString driverImageUrl = '/images/ngoc.png'.obs;
+  RxString driverImageUrl = '/image/upload/v1733846519/driver.png'.obs;
 
 
   void updateOrderStatus(String status) {
@@ -71,15 +73,17 @@ class OrderProcessingController extends GetxController {
 
 
   void resetData(){
+    isDelivering.value = false;
+    hasOrder.value = false;
     orderStatus.value = 'Pending';
     orderStatusValue.value = 0.0;
 
     storeName.value = '';
     storeAddress.value = '';
-    storeImageUrl.value = '/images/banhxeo.png';
+    storeImageUrl.value = '/image/upload/v1733846519/restaurant.png';
 
     driverName.value = '';
     driverPhone.value = '';
-    driverImageUrl.value = '/images/ngoc.png';
+    driverImageUrl.value = '/image/upload/v1733846519/driver.png';
   }
 }

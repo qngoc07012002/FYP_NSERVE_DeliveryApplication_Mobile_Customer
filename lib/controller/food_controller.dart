@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../entity/Food.dart';
+import '../entity/food_model.dart';
 import '../ultilities/Constant.dart';
 
 

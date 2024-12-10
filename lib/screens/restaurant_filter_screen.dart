@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../controller/home_controller.dart';
-import '../entity/Category.dart';
-import '../entity/Restaurant.dart';
+import '../entity/category_model.dart';
+import '../entity/restaurant_model.dart';
 import '../ultilities/Constant.dart';
 
 class FilterPage extends StatefulWidget {

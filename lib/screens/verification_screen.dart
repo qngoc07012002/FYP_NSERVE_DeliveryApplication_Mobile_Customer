@@ -1,10 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:deliveryapplication_mobile_customer/controller/user_controller.dart';
 import 'package:deliveryapplication_mobile_customer/screens/homepage_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../controller/home_controller.dart';
+import '../controller/order_controller.dart';
+import '../controller/orderprocessing_controller.dart';
 import '../ultilities/Constant.dart';
 
 class VerificationPage extends StatefulWidget {
@@ -101,13 +107,13 @@ class _VerificationPageState extends State<VerificationPage> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('jwt_token', token);
 
-
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomePage(),
-            ),
-          );
+          UserController userController = Get.find();
+          await userController.fetchUserInfo();
+          Get.put(HomeController());
+          //Get.put(NotificationController());
+          Get.put(OrderProcessingController());
+          Get.put(OrderController());
+          Get.offAll(HomePage());
         } else if (responseData['result']['status'] == 'pending') {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Try again')),

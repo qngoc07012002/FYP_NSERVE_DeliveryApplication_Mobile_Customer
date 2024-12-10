@@ -1,6 +1,6 @@
-import 'Category.dart';
-import 'Location.dart';
-import 'User.dart';
+import 'category_model.dart';
+import 'location_model.dart';
+import 'user_model.dart';
 
 class Restaurant {
   String? id;
@@ -39,6 +39,7 @@ class Restaurant {
       imgUrl: json['imgUrl'],
       location: json['location'] != null ? Location.fromJson(json['location']) : null,
       category: json['category'] != null ? Category.fromJson(json['category']) : null,
+
     );
   }
 

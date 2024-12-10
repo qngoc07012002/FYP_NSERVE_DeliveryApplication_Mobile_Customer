@@ -13,7 +13,11 @@ class OrderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Orders', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        title: const Text('Orders', style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),),
         backgroundColor: const Color(0xFF39c5c8),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -46,7 +50,7 @@ class OrderPage extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12.0),
                           child: Image.network(
-                            Constant.BACKEND_URL + order.restaurantInfo!.img!,
+                            Constant.IMG_URL + order.restaurantInfo!.img!,
                             width: 80,
                             height: 80,
                             fit: BoxFit.cover,
@@ -86,14 +90,14 @@ class OrderPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   if (order.orderType == 'FOOD') ...[
-                                    // Hiển thị thông tin FOOD
+
                                     Text(
                                       order.restaurantInfo?.name ?? 'Unknown Restaurant',
                                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
                                     ),
                                     const SizedBox(height: 4.0),
                                   ],
-                                  // Hiển thị chung cho cả FOOD và RIDE
+
                                   Text(
                                     'Order Code: ${order.orderCode}',
                                     style: const TextStyle(color: Colors.grey),
@@ -105,7 +109,7 @@ class OrderPage extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 4.0),
                                   Text(
-                                    'Fee: \$${order.shippingFee?.toStringAsFixed(2)}',
+                                    'Total Price: \$${order.totalPrice?.toStringAsFixed(2)}',
                                     style: const TextStyle(color: Colors.grey),
                                   ),
                                 ],

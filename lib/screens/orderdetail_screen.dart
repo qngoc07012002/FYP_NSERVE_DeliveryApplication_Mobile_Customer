@@ -5,8 +5,8 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:intl/intl.dart';
 
 import '../controller/order_controller.dart';
-import '../entity/Order.dart';
-import '../entity/OrderItem.dart';
+import '../entity/order_model.dart';
+import '../entity/orderItem_model.dart';
 import '../ultilities/Constant.dart'; // Để định dạng thời gian
 
 class OrderDetailPage extends StatefulWidget {
@@ -42,13 +42,17 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        title: const Text(
-          'Invoice',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
+        centerTitle: true,
+        title: const Text('Invoice', style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),),
         backgroundColor: const Color(0xFF39c5c8),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20.0)),
+        ),
       ),
       body: Obx(() {
         final currentOrder = orderController.currentOrder.value;
@@ -303,7 +307,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     return Row(
       children: [
         CircleAvatar(
-          backgroundImage: NetworkImage(Constant.BACKEND_URL + imageUrl),
+          backgroundImage: NetworkImage(Constant.IMG_URL + imageUrl),
           radius: 30.0,
         ),
         const SizedBox(width: 12.0),

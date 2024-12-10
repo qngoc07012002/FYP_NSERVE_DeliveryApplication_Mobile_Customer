@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // Import Get package for state management
 import '../controller/food_controller.dart';
 import '../controller/order_controller.dart';
-import '../entity/Restaurant.dart';
-import '../entity/Food.dart';
+import '../entity/restaurant_model.dart';
+import '../entity/food_model.dart';
 import '../ultilities/Constant.dart';
 
 
@@ -33,10 +33,11 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Restaurant Detail',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
+        centerTitle: true,
+        title: const Text('Restaurant Detail', style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),),
         backgroundColor: const Color(0xFF39c5c8),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -64,7 +65,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.network(
-                      Constant.BACKEND_URL + widget.restaurant.imgUrl!,
+                      Constant.IMG_URL + widget.restaurant.imgUrl!,
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,

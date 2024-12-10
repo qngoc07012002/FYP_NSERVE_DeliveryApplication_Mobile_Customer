@@ -1,38 +1,29 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:deliveryapplication_mobile_customer/controller/image_controller.dart';
 import 'package:deliveryapplication_mobile_customer/controller/user_controller.dart';
+import 'package:deliveryapplication_mobile_customer/screens/verification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../controller/image_controller.dart';
 import '../ultilities/Constant.dart';
 
-class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<EditProfilePage> createState() => _EditProfilePageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _RegisterPageState extends State<RegisterPage> {
   final UserController userController = Get.find();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final ImageController imageController = Get.put(ImageController());
   File? profileImage;
-  ImageController imageController = Get.put(ImageController());
   bool isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    if (userController.user.value != null) {
-      nameController.text = userController.user.value!.fullName;
-      emailController.text = userController.user.value!.email;
-    }
-  }
 
   Future<void> pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -44,71 +35,64 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  Future<void> saveProfile() async {
+  void register() async{
     final name = nameController.text.trim();
     final email = emailController.text.trim();
 
-    if (name.isEmpty || email.isEmpty) {
+    if (name.isEmpty || email.isEmpty || profileImage == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all required fields')),
+        const SnackBar(content: Text('Please fill in all required information')),
       );
       return;
     }
+
+    print("Name: $name");
+    print("Email: $email");
+    print("Phone: ${userController.phoneNumber.value}");
+    print("Profile Image: ${profileImage!.path}");
     setState(() {
       isLoading = true;
     });
-    if (profileImage != null){
-      String? imgUrl = await imageController.uploadImage(profileImage!);
-      userController.user.value!.imgUrl = imgUrl!;
-    }
+    String? imgUrl = await imageController.uploadImage(profileImage!);
 
-    userController.user.value!.fullName = name;
-    userController.user.value!.email = email;
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String token =  prefs.getString('jwt_token') ?? '';
-
-    final response = await http.post(
-      Uri.parse(Constant.UPDATE_CUSTOMER_URL),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-      body: json.encode({
-        "name": name,
-        "email": email,
-        "imgUrl": userController.user.value!.imgUrl,
-      }),
-    );
-    setState(() {
-      isLoading = false;
-    });
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      if (responseData['code'] == 1000) {
+    if (imgUrl != null) {
+      final response = await http.post(
+        Uri.parse(Constant.REGISTER_CUSTOMER_URL),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          "phoneNumber": userController.phoneNumber.value,
+          "name": name,
+          "email": email,
+          "imgUrl": imgUrl,
+        }),
+      );
+      setState(() {
+        isLoading = false;
+      });
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        if (responseData['code'] == 1000) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Registration successful!')),
+          );
+          Get.to(VerificationPage(phoneNumber: userController.phoneNumber.value));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${responseData['result']}')),
+          );
+        }
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Update successful!')),
+          const SnackBar(content: Text('Failed to register. Please try again.')),
         );
-
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Something went wrong, please try again')),
+        const SnackBar(content: Text('Something went wrong')),
       );
     }
-
-
-    // userController.user.update((user) {
-    //   user?.fullName = name;
-    //   user?.email = email;
-    //   if (profileImage != null) {
-    //     user?.imgUrl = profileImage!.path; // Update image URL for testing
-    //   }
-    // });
-
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   const SnackBar(content: Text('Profile updated successfully!')),
-    // );
   }
 
   @override
@@ -116,11 +100,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Edit Profile',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            )),
+        title: const Text('Register', style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),),
         backgroundColor: const Color(0xFF39c5c8),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -145,20 +128,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       shape: BoxShape.circle,
                       image: profileImage != null
                           ? DecorationImage(image: FileImage(profileImage!), fit: BoxFit.cover)
-                          : (userController.user.value?.imgUrl.isNotEmpty ?? false)
-                          ? DecorationImage(
-                        image: NetworkImage(
-                            Constant.IMG_URL +  userController.user.value!.imgUrl),
-                        fit: BoxFit.cover,
-                      )
                           : null,
+
                     ),
-                    child: profileImage == null && (userController.user.value?.imgUrl.isEmpty ?? true)
+                    child: profileImage == null
                         ? const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.add_a_photo, size: 40, color: Colors.grey),
                         SizedBox(height: 8),
+
                       ],
                     )
                         : null,
@@ -184,19 +163,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   prefixIcon: const Icon(Icons.email, color: Color(0xFF39c5c8)),
                 ),
               ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: TextEditingController(text: userController.user.value?.phoneNumber),
-                enabled: false,
-                decoration: InputDecoration(
-                  labelText: 'Phone Number',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                  prefixIcon: const Icon(Icons.phone, color: Color(0xFF39c5c8)),
-                ),
-              ),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: saveProfile,
+                onPressed: register,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF39c5c8),
                   padding: const EdgeInsets.symmetric(vertical: 15),
@@ -209,7 +178,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 )
                     : const Text(
-                  'Save',
+                  'Register',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

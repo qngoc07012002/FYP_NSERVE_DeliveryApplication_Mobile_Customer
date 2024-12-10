@@ -1,9 +1,13 @@
 import 'dart:convert';
+import 'package:deliveryapplication_mobile_customer/screens/register_screen.dart';
 import 'package:deliveryapplication_mobile_customer/screens/verification_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:http/http.dart' as http;
 
+import '../controller/user_controller.dart';
 import '../ultilities/Constant.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,18 +18,25 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  UserController userController = Get.find();
   final TextEditingController phoneController = TextEditingController();
   String? phoneNumber;
   bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    userController.checkTokenValidity();
+  }
 
   Future<void> login(BuildContext context) async {
     print(phoneNumber);
     setState(() {
       isLoading = true;
     });
-
+    userController.phoneNumber.value = phoneNumber!;
     final response = await http.post(
-      Uri.parse(Constant.GENERATE_OTP_URL),
+      Uri.parse(Constant.GENERATE_OTP_CUSTOMER_URL),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -37,11 +48,10 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       isLoading = false;
     });
-
+    final Map<String, dynamic> responseData = json.decode(response.body);
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
+
       if (responseData['code'] == 1000) {
-        // Successful response
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -49,15 +59,21 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       } else {
-        // Handle other responses if necessary
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Unexpected error occurred')),
         );
       }
     } else if (response.statusCode == 404) {
-      // Handle response errors
+      if (responseData['code'] == 1002){
+        Get.to(RegisterPage());
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Unexpected error occurred')),
+        );
+      }
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid Phone')),
+        const SnackBar(content: Text('Failed to login. Please try again.')),
       );
     }
   }

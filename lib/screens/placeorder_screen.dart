@@ -15,7 +15,7 @@ class OrderSummaryPage extends StatefulWidget {
 class _OrderSummaryPageState extends State<OrderSummaryPage> {
   final OrderController orderController = Get.find();  // Accessing the controller
   final HomeController homeController = Get.find();
-  String _selectedPaymentMethod = 'Cash';
+
   @override
   Widget build(BuildContext context) {
     orderController.calculateShippingFee();
@@ -177,14 +177,14 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
                   child: Row(
                     children: [
                       Icon(
-                        _selectedPaymentMethod == 'Cash'
+                        orderController.selectedPaymentMethod.value == 'Cash'
                             ? Icons.money_off
                             : Icons.credit_card,
                         color: Color(0xFF39c5c8),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
-                        child: Text(_selectedPaymentMethod, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        child: Text(orderController.selectedPaymentMethod.value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       ),
                       const Icon(Icons.arrow_drop_down, color: Color(0xFF39c5c8)),
                     ],
@@ -200,14 +200,10 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
           onPressed: () async {
-           if (_selectedPaymentMethod == "Cash") {
-             orderController.sendOrderFoodRequest();
-           //  Get.to(OrderProcessingPage());
-             Get.to(() => OrderProcessingPage());
-           } else  if (await StripeService.instance.makePayment()){
-             orderController.sendOrderFoodRequest();
-             Get.to(() => OrderProcessingPage());
-           }
+            bool isProcessed =  await orderController.sendOrderFoodRequest();;
+            if (isProcessed){
+              Get.to(() => OrderProcessingPage());
+            }
 
           },
           style: ElevatedButton.styleFrom(
@@ -246,7 +242,7 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
     ).then((selected) {
       if (selected != null) {
         setState(() {
-          _selectedPaymentMethod = selected;
+          orderController.selectedPaymentMethod.value = selected;
         });
       }
     });

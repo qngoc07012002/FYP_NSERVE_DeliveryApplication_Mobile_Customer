@@ -9,13 +9,31 @@ class Constant {
   static const GENERATE_OTP_URL = "$BACKEND_URL/auth/generateOTP";
 
   // ignore: constant_identifier_names
+  static const GENERATE_OTP_CUSTOMER_URL = "$BACKEND_URL/auth/customer/generateOTP";
+
+  // ignore: constant_identifier_names
   static const VERIFY_OTP_URL = "$BACKEND_URL/auth/verifyOTP";
 
   // ignore: constant_identifier_names
   static const IMAGE_URL = "$BACKEND_URL/images/";
 
   // ignore: constant_identifier_names
+  static const LOGOUT_URL = "$BACKEND_URL/auth/logout";
+
+  // ignore: constant_identifier_names
+  static const INTROSPECT_URL = "$BACKEND_URL/auth/introspect";
+
+  // ignore: constant_identifier_names
   static const RESTAURANT_URL = "$BACKEND_URL/restaurants";
+
+  // ignore: constant_identifier_names
+  static const REGISTER_CUSTOMER_URL = "$BACKEND_URL/users/registerCustomer";
+
+  // ignore: constant_identifier_names
+  static const UPDATE_CUSTOMER_URL = "$BACKEND_URL/users/updateCustomer";
+
+  // ignore: constant_identifier_names
+  static const DRIVER_URL = "$BACKEND_URL/drivers";
 
   // ignore: constant_identifier_names
   static const ORDER_DRIVER_URL = "$ORDER_URL/driver";
@@ -53,7 +71,7 @@ class Constant {
   // ignore: constant_identifier_names
   static const IMG_URL = "https://res.cloudinary.com/dsdowcig9";
 
-  static const JWT = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJxbmdvYzA3MDEyMDAyIiwic3ViIjoiOTQwZjJlM2ItNDY1Yi00ZjI1LWIzNTQtZDM2YWUxOGZiZjMyIiwiZXhwIjozNjE3MzM1MTQyMzksImlhdCI6MTczMzUxNDIzOSwianRpIjoiNjY1MjMwMTEtMzE4ZS00ZTUwLWI3NzktMWE1ZGRhMzkyYmU1Iiwic2NvcGUiOiJST0xFX0FETUlOIFJPTEVfUkVTVEFVUkFOVCBST0xFX0NVU1RPTUVSIFJPTEVfRFJJVkVSIn0.fyad8YgYSOMfiqFW7cdfIvjQGt2xuYyB45oM6PK-ze2HXMh_KrWFtjmJ26atRJsgyjuebTcGWJsBWosi-XMfQg";
+  static const JWT = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJxbmdvYzA3MDEyMDAyIiwic3ViIjoiOTQwZjJlM2ItNDY1Yi00ZjI1LWIzNTQtZDM2YWUxOGZiZjMyIiwiZXhwIjoxNzQxODU2NTgwLCJpYXQiOjE3MzM4NTY1ODAsImp0aSI6IjA4NmJiMTFlLTRlNmItNGM1ZC05NzgyLWExMmFjMjk5NzkwNCIsInNjb3BlIjoiIn0.6zk-6d_rwH3dDCdZwxhS_QBdraFC0Hh9cPY5MeULniNXzipHocemYbQ-odhwStbdPVID25Rtr0Bzn2EVXHeYdA";
 
   static const stripePublishableKey = "pk_test_51MPfTSA5vKPlbljEeTnHusfYFriKpHPpUJe0KNQIc9xB638GPdWRWO5RnzrLBeD6Am9NInVocj4AtJKSBUUA9GS700cQv3HfFQ";
 

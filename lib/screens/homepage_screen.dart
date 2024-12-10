@@ -1,46 +1,90 @@
 // home_page.dart
+import 'package:deliveryapplication_mobile_customer/screens/order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/home_controller.dart';
-import '../entity/Restaurant.dart';
+import '../controller/orderprocessing_controller.dart';
+import '../entity/restaurant_model.dart';
 import '../ultilities/Constant.dart';
 import 'locationpicker_screen.dart';
+import 'orderprocessing_screen.dart';
 import 'profile_screen.dart';
 import 'restaurant_filter_screen.dart';
 import 'restaurantdetail_screen.dart';
-import 'message_screen.dart';
 import 'bookbike_screen.dart';
 
 class HomePage extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
-
+  final OrderProcessingController orderProcessingController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(() => RefreshIndicator(
-        onRefresh: controller.fetchRestaurants,
-        child: IndexedStack(
-          index: controller.selectedIndex.value,
-          children: [
-            _buildHomePage(),
-            RideBookingPage(),
-            MessagePage(),
-            ProfilePage(),
-          ],
+    return Stack(
+      children: [
+        Scaffold(
+          body: Obx(() => RefreshIndicator(
+            onRefresh: controller.fetchRestaurants,
+            child: IndexedStack(
+              index: controller.selectedIndex.value,
+              children: [
+                _buildHomePage(),
+                OrderPage(),
+
+                ProfilePage(),
+              ],
+            ),
+          )),
+          bottomNavigationBar: Obx(() => BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(icon: Icon(Icons.fastfood), label: 'Food'),
+              BottomNavigationBarItem(icon: Icon(Icons.reorder), label: 'Order'),
+
+              BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+            ],
+            currentIndex: controller.selectedIndex.value,
+            selectedItemColor: const Color(0xFF39c5c8),
+            unselectedItemColor: Colors.grey,
+            onTap: controller.onItemTapped,
+          )),
         ),
-      )),
-      bottomNavigationBar: Obx(() => BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.fastfood), label: 'Food'),
-          BottomNavigationBarItem(icon: Icon(Icons.directions_car), label: 'Bike'),
-          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Message'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
-        currentIndex: controller.selectedIndex.value,
-        selectedItemColor: const Color(0xFF39c5c8),
-        unselectedItemColor: Colors.grey,
-        onTap: controller.onItemTapped,
-      )),
+        Obx(() {
+          if (orderProcessingController.hasOrder.value) {
+            return Positioned(
+              bottom: 70,
+              left: 20,
+              right: 20,
+              child: GestureDetector(
+                onTap: () {
+                  Get.to(() => OrderProcessingPage());
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.delivery_dining, color: Color(0xFF39c5c8), size: 32),
+                      const SizedBox(width: 16.0),
+
+                      const Icon(Icons.arrow_forward, color: Color(0xFF39c5c8)),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+          return const SizedBox.shrink();
+        }),
+      ],
     );
   }
 
@@ -185,7 +229,7 @@ class HomePage extends StatelessWidget {
           child: Row(
             children: [
               Image.network(
-                Constant.BACKEND_URL + restaurant.imgUrl!,
+                Constant.IMG_URL + restaurant.imgUrl!,
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,

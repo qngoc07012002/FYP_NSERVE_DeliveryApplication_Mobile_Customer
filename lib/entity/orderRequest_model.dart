@@ -1,6 +1,6 @@
-import 'package:deliveryapplication_mobile_customer/entity/Location.dart';
+import 'package:deliveryapplication_mobile_customer/entity/location_model.dart';
 
-import 'OrderItem.dart';
+import 'orderItem_model.dart';
 
 class OrderRequest {
   String? restaurantId;
@@ -11,6 +11,7 @@ class OrderRequest {
   double? totalPrice;
   String? orderType;
   String? paymentMethod;
+  String? paymentIntentId;
 
   OrderRequest({
     this.restaurantId,
@@ -21,6 +22,7 @@ class OrderRequest {
     this.totalPrice,
     this.orderType,
     this.paymentMethod,
+    this.paymentIntentId,
   });
 
   factory OrderRequest.fromJson(Map<String, dynamic> json) {
@@ -52,6 +54,7 @@ class OrderRequest {
       'totalPrice': totalPrice,
       'orderType': orderType,
       'paymentMethod': paymentMethod,
+      'paymentIntentId': paymentIntentId,
     };
   }
 }

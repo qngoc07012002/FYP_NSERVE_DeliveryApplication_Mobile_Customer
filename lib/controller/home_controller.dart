@@ -1,10 +1,10 @@
 // home_controller.dart
 import 'dart:convert';
-import 'package:deliveryapplication_mobile_customer/entity/Restaurant.dart';
+import 'package:deliveryapplication_mobile_customer/entity/restaurant_model.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import '../entity/Category.dart';
+import '../entity/category_model.dart';
 import '../screens/locationpicker_screen.dart';
 import '../services/reserve_geo.dart';
 import '../ultilities/Constant.dart';
@@ -29,7 +29,7 @@ class HomeController extends GetxController {
 
   Future<void> _loadToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('jwt_token', Constant.JWT);
+    //await prefs.setString('jwt_token', Constant.JWT);
     token.value = prefs.getString('jwt_token') ?? '';
     print(token.value);
 
@@ -51,6 +51,7 @@ class HomeController extends GetxController {
       final response = await http.get(Uri.parse(Constant.RESTAURANT_URL));
       if (response.statusCode == 200) {
         List<dynamic> jsonList = json.decode(response.body);
+        print(jsonList);
         restaurants.value = jsonList.map((json) => Restaurant.fromJson(json)).toList();
       } else {
         throw Exception(response.statusCode);

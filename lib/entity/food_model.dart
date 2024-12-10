@@ -1,5 +1,5 @@
-import 'Category.dart';
-import 'Restaurant.dart';
+import 'category_model.dart';
+import 'restaurant_model.dart';
 
 class Food {
   String? id;

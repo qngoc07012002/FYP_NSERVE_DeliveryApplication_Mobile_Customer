@@ -1,8 +1,8 @@
 import 'package:intl/intl.dart'; // For date formatting and parsing
-import 'Location.dart';
-import 'OrderItem.dart';
-import 'Restaurant.dart';
-import 'User.dart';
+import 'location_model.dart';
+import 'orderItem_model.dart';
+import 'restaurant_model.dart';
+import 'user_model.dart';
 
 class Order {
   String? id;

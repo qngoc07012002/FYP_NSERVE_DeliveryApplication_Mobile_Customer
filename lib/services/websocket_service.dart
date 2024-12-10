@@ -21,9 +21,6 @@ class WebSocketService extends GetxService {
     stompClient = StompClient(
       config: StompConfig.sockJS(
         url: Constant.WEBSOCKET_URL,
-        webSocketConnectHeaders: {
-          'Authorization': 'Bearer ${Constant.JWT}',
-        },
         onConnect: onConnect,
         onWebSocketError: (error) => print('WebSocket Error: $error'),
         onStompError: (error) => print('STOMP Error: $error'),
